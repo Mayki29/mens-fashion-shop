@@ -1,0 +1,29 @@
+.footer {
+    background-color: black;
+    color: white;
+    padding: 20px 0;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer .whatsapp-chat {
+    display: flex;
+    align-items: center;
+}
+
+.footer .whatsapp-chat img {
+    margin-right: 10px;
+}
+.logo-footer{
+    
+}
+.logo-footer img{
+    height: 50px;    
+}

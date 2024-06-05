@@ -1,0 +1,48 @@
+.line{
+    text-decoration: line-through;
+    color: red;
+}
+.regular-price{
+    color: gray
+}
+
+.product-image{
+    height: 100px;
+}
+.product-image img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.product-brand{
+    color: gray;
+}
+
+.selector-cantidad{
+    width: inherit;
+    height: inherit;
+
+}
+.cantidad{
+    text-align: center;
+    border: none;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.btn-cantidad-carrito{
+    border: none;
+    font-size: 1em;
+    padding: 0;
+    width: 1.5em;
+    background: #1f1514e6;
+    color: white;
+    border-radius: 50%;
+}

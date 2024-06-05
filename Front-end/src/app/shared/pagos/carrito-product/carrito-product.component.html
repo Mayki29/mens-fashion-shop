@@ -1,0 +1,27 @@
+<td class="row">
+    <div class="col-12 col-md-3 product-image">
+        <img [src]="imagen" alt="">
+    </div>
+    <div class="col-12 col-md-9">
+        <span class="product-name">{{nombre}}</span> <br>
+        <span class="product-brand">{{marca}}</span>
+    </div>
+</td>
+<td class="align-middle">
+    <span class="line">
+        <span class="regular-price">S/.{{precioAntes}}0</span>
+    </span><br>
+    <span class="discount-price">S/.{{precio}}0</span>
+</td>
+<td class="align-middle">
+    <div class="selector-cantidad">
+        <button class="col-4 btn-cantidad-carrito" (click)="disminuir()" value="disminuir">-</button>
+        <input class=" col-4 cantidad border-0" name="" type="number" min="1" max="15" value="{{cantidad}}" readonly>
+        <button class="col-4 btn-cantidad-carrito" (click)="incrementar()" value="incrementar">+</button>
+    </div>
+
+</td>
+<td class="align-middle">S/.{{total}}0</td>
+<td class="align-middle">
+    <button class="btn"><i class="bi bi-trash text-danger"></i></button>
+</td>

@@ -1,0 +1,48 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBBRiUnhiyp3QoHecNBwPonpcL0VSM8gKpFma9Gg6BeUAYe2dQki2Cze9x-DdXo0IiRB0&usqp=CAU" alt="Men's Fashion Shop" class="img-fluid mb-2">
+                    <h4>Inicia sesión para poder comprar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="modal-body p-5 pt-0">
+                        <form>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
+                                <label for="floatingInput">Correo Electrónico</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+                                <label for="floatingPassword">Contraseña</label>
+                            </div>
+                            <small class="form-text text-right mb-3">
+                                <a href="#">¿Olvidaste tu contraseña? Reestablécele tu contraseña aquí</a>
+                            </small>
+                            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-warning" type="submit">Iniciar sesión</button>
+                            <small class="text-body-secondary">Al hacer clic en Iniciar sesión, aceptas los términos de uso.</small>
+                        </form>
+                        <hr class="my-4">
+                        <h2 class="fs-5 fw-bold mb-3">O usa un tercero</h2>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+                            <svg class="bi me-1" width="16" height="16"><use xlink:href="#twitter"/></svg>
+                            Iniciar sesión con Twitter
+                        </button>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit">
+                            <svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook"/></svg>
+                            Iniciar sesión con Facebook
+                        </button>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+                            <svg class="bi me-1" width="16" height="16"><use xlink:href="#github"/></svg>
+                            Iniciar sesión con GitHub
+                        </button>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <small>No tienes una cuenta aún? <a routerLink="/src/app/pages/registro/registro.component.html">Regístrate</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

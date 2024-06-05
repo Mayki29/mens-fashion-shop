@@ -1,0 +1,38 @@
+<header class="p-3 mb-3 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 me-5 link-body-emphasis text-decoration-none">
+        <img class="logo" src="assets/images/logo.jpg" alt="">
+        <span class="ms-1">MEN'S FASHION SHOP</span>
+      </a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <!--li><a href="#" class="nav-link px-2 link-secondary">INICIO</a></li-->
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">INICIO</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">CATEGORIAS</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">NOVEDADES</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">OFERTAS</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">MARCAS</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">NOSOTROS</a></li>
+      </ul>
+
+
+
+      <div ngbDropdown class="d-inline-block">
+        <a class="text-black nav-item" id="dropdownBasic1" ngbDropdownToggle>
+          <i class="bi bi-person-fill"></i>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <a href="/login" ngbDropdownItem>Iniciar sesion</a>
+          <a href="/registro" ngbDropdownItem>Registrarse</a>
+        </div>
+      </div>
+      <div class="mx-3">
+        <a href="/carrito" class="link-body-emphasis text-decoration-none"><i class="bi bi-cart"></i></a>
+      </div>
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <input type="search" class="form-control" placeholder="Buscar un producto" aria-label="Search">
+      </form>
+    </div>
+  </div>
+</header>

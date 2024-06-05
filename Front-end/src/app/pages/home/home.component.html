@@ -1,0 +1,37 @@
+<ngb-carousel>
+    <ng-template ngbSlide *ngFor="let item of images; index as i">
+        <div class="picsum-img-wrapper">
+            <img [src]="item" alt="" />
+        </div>
+    </ng-template>
+</ngb-carousel>
+<div class="bg-danger text-center py-2">
+    <p class="m-0">HASTA 30% DE DESCUENTO EN PRODUCTOS SELECCIONADOS DE VERANO!!!!</p>
+</div>
+<div class="container my-5">
+    <h2 class="mb-4">PRODUCTOS MAS POPULARES</h2>
+    <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 1'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="20"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 2'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo2.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="25"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 3'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo3.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="30"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo2.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="10"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 5'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="20"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 6'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo3.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="20"></app-product-card></ng-template>
+        <ng-template carouselSlide><app-product-card [nombre]="'POLO OVERSIZE 7'" [marca]="'OVERTAKE'"
+                [imagen]="'assets/images/polo.jpg'" [precioRegular]="84.99"
+                [precioDescuento]="49.99" [descuento]="20"></app-product-card></ng-template>
+
+    </owl-carousel-o>
+</div>
