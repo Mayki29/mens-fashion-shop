@@ -1,4 +1,4 @@
-package com.utp.desarrollo.back_end;
+package com.utp.desarrollo.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
