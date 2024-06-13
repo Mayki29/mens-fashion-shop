@@ -30,6 +30,6 @@ public class ProductoServicesImpl implements IProductoService{
 
     @Override
     public Producto findById(Long id) {
-        return (Producto) productoDao.findById(id).get();
+        return (Producto) productoDao.findById(id).orElse(null);
     }
 }

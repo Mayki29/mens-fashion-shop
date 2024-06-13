@@ -21,6 +21,7 @@ public class Producto {
     private Long id;
     @Column(length = 150)
     private String nombre;
+    @Column(length = 250)
     private String descripcion;
     //private String marca;
     //private String imagen;
