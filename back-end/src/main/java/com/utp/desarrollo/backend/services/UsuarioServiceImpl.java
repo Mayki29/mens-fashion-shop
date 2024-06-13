@@ -16,18 +16,31 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public List<Usuario> findAll() {
-        return (List<Usuario>)usuarioDao.findAll();
+        return (List<Usuario>) usuarioDao.findAll();
     }
 
     @Override
     public Usuario findById(Long id) {
-        return (Usuario)usuarioDao.findById(id).orElse(null);
+        return (Usuario) usuarioDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public Usuario login(String email, String contrasena) {
+        return usuarioDao.login(email, contrasena);
     }
 
     @Override
     public void save(Usuario usuario) {
-        usuarioDao.save(usuario);
+        Usuario newUsuario = usuario;
+        newUsuario.setRol("Cliente");
+        newUsuario.setEstado(true);
+        usuarioDao.save(newUsuario);
 
+    }
+
+    @Override
+    public void update(Usuario usuario) {
+        usuarioDao.save(usuario);
     }
 
     @Override
@@ -35,4 +48,5 @@ public class UsuarioServiceImpl implements IUsuarioService {
         usuarioDao.deleteById(id);
 
     }
+
 }

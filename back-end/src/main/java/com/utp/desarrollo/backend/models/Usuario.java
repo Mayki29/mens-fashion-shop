@@ -1,5 +1,7 @@
 package com.utp.desarrollo.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class Usuario {
     @Column(length = 50)
     private String apellidos;
     @Column(length = 12)
+    @JsonIgnore
     private String contrasena;
     @Column(length = 8)
     private String dni;

@@ -35,13 +35,18 @@ public class UsuarioController {
         return usuarioService.findById(id);
     }
 
+    @PostMapping("/login")
+    public Usuario login(@RequestBody Usuario usuario){
+        return usuarioService.login(usuario.getEmail(), usuario.getContrasena());
+    }
+
     @PostMapping()
     public void saveUsuario(@RequestBody Usuario usuario) {
         usuarioService.save(usuario);
     }
     @PutMapping()
     public void updateUsuario(@RequestBody Usuario usuario) {
-        usuarioService.save(usuario);
+        usuarioService.update(usuario);
     }
 
     @DeleteMapping("/{id}")
