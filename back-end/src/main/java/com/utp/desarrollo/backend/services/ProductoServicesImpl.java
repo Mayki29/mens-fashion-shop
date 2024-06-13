@@ -16,7 +16,7 @@ public class ProductoServicesImpl implements IProductoService{
 
     @Override
     public List<Producto> getAll() {
-        return productoDao.getAll();
+        return (List<Producto>)productoDao.findAll();
     }
 
 }
