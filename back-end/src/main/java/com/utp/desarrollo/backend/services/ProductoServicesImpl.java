@@ -15,8 +15,21 @@ public class ProductoServicesImpl implements IProductoService{
     private IProductoDao productoDao;
 
     @Override
-    public List<Producto> getAll() {
-        return (List<Producto>)productoDao.findAll();
+    public List<Producto> findAll() {
+        return (List<Producto>)productoDao.findAll();   
+    }
+    @Override
+    public void save(Producto producto) {
+        productoDao.save(producto);
+    }
+    
+    @Override
+    public void delete(Long id) {
+        productoDao.deleteById(id);
     }
 
+    @Override
+    public Producto findById(Long id) {
+        return (Producto) productoDao.findById(id).get();
+    }
 }
