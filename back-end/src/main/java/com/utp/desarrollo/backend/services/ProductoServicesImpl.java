@@ -19,8 +19,9 @@ public class ProductoServicesImpl implements IProductoService{
         return (List<Producto>)productoDao.findAll();   
     }
     @Override
-    public void save(Producto producto) {
-        productoDao.save(producto);
+    public Producto save(Producto producto) {
+        return  productoDao.save(producto);
+
     }
     
     @Override

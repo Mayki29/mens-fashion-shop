@@ -23,12 +23,15 @@ public class Producto {
     private String nombre;
     @Column(length = 250)
     private String descripcion;
-    //private String marca;
-    //private String imagen;
+    private String marca;
     @Column(name = "precio_venta")
     private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
     private Integer stock;
-    //private Double descuento;
+    private Double descuento;
+    @Column(name = "precio_regular")
+    private Double precioRegular;
+    @Column(name = "imagen_url")
+    private String imagenUrl;
 }
