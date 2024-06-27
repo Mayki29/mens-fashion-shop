@@ -34,4 +34,8 @@ public class Producto {
     private Double precioRegular;
     @Column(name = "imagen_url")
     private String imagenUrl;
+    @Column(length = 50)
+    private String corte;
+    @Column(length = 50)
+    private String color;
 }
