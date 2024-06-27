@@ -1,73 +1,71 @@
 <div class="container">
     <div class="row">
-        <div class="col-3">
-            <form action="">
-                <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0,ngb-panel-1,ngb-panel-2">
-                    <ngb-panel title="Marca" class="prt bg-none">
-                        <ng-template ngbPanelContent>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">SKILLROAD</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">OVERTAKE</label>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                    <ngb-panel title="CORTE" class="prt bg-none">
-                        <ng-template ngbPanelContent>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">SLIM FIT</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">REGULAR FIT</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">OVERSIZE</label>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                    <ngb-panel title="COLOR" class="prt bg-none">
-                        <ng-template ngbPanelContent>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">NEGRO</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">AZUL</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="">
-                                <label class="form-check-label" for="">GRIS</label>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </form>
-
-        </div>
-        <div class="col-8 products-container">
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-            <app-product-card [nombre]="'POLO OVERSIZE 4'" [marca]="'OVERTAKE'" [imagen]="'assets/images/polo.jpg'"
-                [precioRegular]="84.99" [precioDescuento]="49.99"></app-product-card>
-        </div>
+      <div class="col-3">
+        <form action="">
+          <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0,ngb-panel-1,ngb-panel-2">
+            <ngb-panel title="Marca" class="prt bg-none">
+              <ng-template ngbPanelContent>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="SKILLBOARD" id="skillboard" (change)="onBrandChange($event)">
+                  <label class="form-check-label" for="skillboard">SKILLBOARD</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="OVERTAKE" id="overtake" (change)="onBrandChange($event)">
+                  <label class="form-check-label" for="overtake">OVERTAKE</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="TNSR" id="tnsr" (change)="onBrandChange($event)">
+                  <label class="form-check-label" for="tnsr">TNSR</label>
+                </div>
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel title="CORTE" class="prt bg-none">
+              <ng-template ngbPanelContent>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="SLIM FIT" id="slimfit">
+                  <label class="form-check-label" for="slimfit">SLIM FIT</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="REGULAR FIT" id="regularfit">
+                  <label class="form-check-label" for="regularfit">REGULAR FIT</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="OVERSIZE" id="oversize">
+                  <label class="form-check-label" for="oversize">OVERSIZE</label>
+                </div>
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel title="COLOR" class="prt bg-none">
+              <ng-template ngbPanelContent>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="NEGRO" id="negro">
+                  <label class="form-check-label" for="negro">NEGRO</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="AZUL" id="azul">
+                  <label class="form-check-label" for="azul">AZUL</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="GRIS" id="gris">
+                  <label class="form-check-label" for="gris">GRIS</label>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </form>
+      </div>
+      <div class="col-8 products-container">
+        <app-product-card *ngFor="let product of filteredProducts"
+          [nombre]="product.nombre"
+          [marca]="product.marca"
+          [imagen]="'http://localhost:8080/uploads/' + product.imagenUrl"
+          [precioRegular]="product.precioRegular"
+          [precioDescuento]="product.precioVenta"
+          [descuento]="product.descuento"
+          >
+        
+        </app-product-card>
+      </div>
     </div>
-</div>
+  </div>
+  

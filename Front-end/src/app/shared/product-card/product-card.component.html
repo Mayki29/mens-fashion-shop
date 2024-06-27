@@ -1,23 +1,22 @@
 <div class="card" style="width: 15rem;">
-    <div class="card-img-container">
-        <img [src]="imagen" class="card-img-top" alt="{{nombre}}">
+  <div class="card-img-container">
+      <img [src]="imagen" class="card-img-top" alt="{{nombre}}">
+  </div>
+  <div class="card-body">
+    <div class="product-card-name">
+      <p class="product-name">{{nombre}}</p>
     </div>
-    <div class="card-body">
-      <div class="product-card-name">
-        <p>{{nombre}}</p>
-      </div>
-      <div class="product-card-brand">
-        <P>{{marca}}</P>
-      </div>
-      <div class="product-card-price">
-        <span class="line">
-            <span class="regular-price">S/{{precioRegular}}</span>
-        </span>
-        <span class="discount-price"><i class="bi bi-tags-fill"></i>S/{{precioDescuento}}</span>
-      </div>
-      <div class="product-card-discount mt-2">
-        <span>{{descuento}}%DSCTO</span>
-      </div>
-        
+    <div class="product-card-brand">
+      <p class="product-brand">{{marca}}</p>
+    </div>
+    <div class="product-card-price">
+      <span class="line">
+          <span class="regular-price">S/{{precioRegular}}</span>
+      </span>
+      <span class="discount-price"><i class="bi bi-tags-fill"></i>S/{{precioDescuento}}</span>
+    </div>
+    <div class="product-card-discount mt-2">
+      <span class="discount-label">{{descuento}}%DSCTO</span>
     </div>
   </div>
+</div>

@@ -12,6 +12,8 @@ export class ProductCardComponent implements OnInit {
   @Input() precioRegular: number = 0;
   @Input() precioDescuento: number = 0;
   @Input() descuento: number = 0;
+  @Input() corte: string = '';
+  @Input() color: string = '';
 
   constructor() { }
 
