@@ -43,7 +43,8 @@ public class Usuario {
     private String rol;
     private boolean estado;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany()
     @JoinColumn(name = "id_usuario")
+    @JsonIgnore
     private List<Venta> ventas;
 }
