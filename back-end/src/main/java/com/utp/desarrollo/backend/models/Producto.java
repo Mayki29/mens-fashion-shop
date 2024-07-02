@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,20 +31,36 @@ public class Producto {
     private String nombre;
     @Column(length = 250)
     private String descripcion;
-    private String marca;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
+
     @Column(name = "precio_venta")
     private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
-    private Integer stock;
+    private String color;
     private Double descuento;
     @Column(name = "precio_regular")
     private Double precioRegular;
     @Column(name = "imagen_url")
     private String imagenUrl;
+    @Column(name = "imagen_url_sec", columnDefinition = "json")
+    private String imagenUrlSec;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "id_producto")
     @JsonIgnore
     private List<DetalleVenta> detalleVenta;
+    
+    @OneToMany
+    @JoinColumn(name = "id_producto")
+    @JsonIgnore
+    private List<Inventario> inventario;
+
 }
