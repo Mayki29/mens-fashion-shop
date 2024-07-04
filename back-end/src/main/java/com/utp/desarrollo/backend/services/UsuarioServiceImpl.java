@@ -2,6 +2,7 @@ package com.utp.desarrollo.backend.services;
 
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,21 +27,25 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public Usuario login(String email, String contrasena) {
-        return usuarioDao.login(email, contrasena);
+        String contrasenaEncriptada = DigestUtils.sha512Hex(contrasena);
+        return usuarioDao.login(email, contrasenaEncriptada);
     }
 
     @Override
-    public void save(Usuario usuario) {
+    public Usuario save(Usuario usuario) {
         Usuario newUsuario = usuario;
         newUsuario.setRol("Cliente");
         newUsuario.setEstado(true);
-        usuarioDao.save(newUsuario);
+        newUsuario.setContrasena(DigestUtils.sha512Hex(usuario.getContrasena()));
+        return usuarioDao.save(newUsuario);
 
     }
 
     @Override
     public void update(Usuario usuario) {
-        usuarioDao.save(usuario);
+        Usuario newUsuario = usuario;
+        newUsuario.setContrasena(DigestUtils.sha512Hex(usuario.getContrasena()));
+        usuarioDao.save(newUsuario);
     }
 
     @Override
