@@ -30,8 +30,8 @@ public class Usuario {
     private String nombre;
     @Column(length = 50)
     private String apellidos;
-    @Column(length = 12)
-    @JsonIgnore
+    @Column(length = 128)
+    //@JsonIgnore
     private String contrasena;
     @Column(length = 8)
     private String dni;

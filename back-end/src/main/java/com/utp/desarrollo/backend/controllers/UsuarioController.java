@@ -40,8 +40,8 @@ public class UsuarioController {
     }
 
     @PostMapping()
-    public void saveUsuario(@RequestBody Usuario usuario) {
-        usuarioService.save(usuario);
+    public Usuario saveUsuario(@RequestBody Usuario usuario) {
+        return usuarioService.save(usuario);
     }
     @PutMapping()
     public void updateUsuario(@RequestBody Usuario usuario) {

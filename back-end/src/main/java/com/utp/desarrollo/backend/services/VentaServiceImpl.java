@@ -37,9 +37,8 @@ public class VentaServiceImpl implements IVentaService{
     public ComprobanteVenta save(Venta venta) {
         Venta v = venta;
         v.setFechaHora(LocalDateTime.now());
-        Long id = ventaDao.save(v).getId();//Guarda la venta en la base de al datos y obtiene su id
-        Venta ventaGenerada = ventaDao.findById(id).orElse(null);//Busca la venta que se acaba de crear
-        
+        Venta ventaGenerada = ventaDao.save(v);//Guarda y obtiene venta
+
         
         //Asigna los datos de la venta al comprobante
         ComprobanteVenta comprobante = new ComprobanteVenta();
@@ -55,10 +54,7 @@ public class VentaServiceImpl implements IVentaService{
             productosList.add(mapProducto);
         });
         comprobante.setProductos(productosList);
-        //Calcula total de la venta
-        Double totalVenta = ventaGenerada.getDetalleVenta().stream()
-                        .reduce(0D, (total, elemento )-> total + (elemento.getPrecioUnitario() * elemento.getCantidad()), Double::sum);
-        comprobante.setTotal(totalVenta);
+        comprobante.setTotal(ventaGenerada.getTotal());
         return comprobante;
     }
 

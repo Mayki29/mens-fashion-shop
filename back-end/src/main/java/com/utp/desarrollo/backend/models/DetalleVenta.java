@@ -42,5 +42,8 @@ public class DetalleVenta {
     @Column(name = "precio_unitario")
     private Double precioUnitario;
     private Integer cantidad;
-   
+
+    public Double getImporte(){
+        return precioUnitario * cantidad;
+    }
 }

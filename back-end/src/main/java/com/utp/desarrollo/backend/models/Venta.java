@@ -40,4 +40,9 @@ public class Venta {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_venta")
     private List<DetalleVenta> detalleVenta;
+
+    public Double getTotal(){
+        return getDetalleVenta().stream()
+                        .reduce(0D, (total, elemento )-> total + elemento.getImporte(), Double::sum);
+    }
 }
