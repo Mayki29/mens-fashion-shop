@@ -1,5 +1,6 @@
 package com.utp.desarrollo.backend.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,22 +52,17 @@ public class ProductoController {
     public ResponseEntity<Producto> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("producto") String productoJson) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            // Log the received JSON
             logger.info("Received producto JSON: " + productoJson);
 
-            // Parse the JSON string into a Producto object
             Producto producto = mapper.readValue(productoJson, Producto.class);
 
-            // Save the image file to the uploads directory
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             Path path = Paths.get("uploads/" + fileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            // Set the image URL in the producto object
             String imageUrl = "http://localhost:8080/uploads/" + fileName;
             producto.setImagenUrl(imageUrl);
 
-            // Save the producto object to the database
             Producto savedProducto = productoService.save(producto);
 
             return new ResponseEntity<>(savedProducto, HttpStatus.OK);
@@ -83,4 +81,56 @@ public class ProductoController {
     public void deleteProducto(@PathVariable Long id) {
         productoService.delete(id);
     }
+
+    @GetMapping("/marcas")
+    public ResponseEntity<List<String>> getMarcas() {
+        List<String> marcas = productoService.findAll()
+                .stream()
+                .map(producto -> producto.getMarca().getNombre())
+                .distinct()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(marcas);
+    }
+
+    @GetMapping("/cortes")
+    public ResponseEntity<List<String>> getCortes() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> cortes = productoService.findAll()
+                .stream()
+                .map(producto -> {
+                    try {
+                        JsonNode descripcionNode = mapper.readTree(producto.getDescripcion());
+                        return descripcionNode.get("corte").asText();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(cortes);
+    }
+
+    @GetMapping("/colores")
+    public ResponseEntity<List<String>> getColores() {
+        List<String> colores = productoService.findAll()
+                .stream()
+                .map(Producto::getColor)
+                .distinct()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(colores);
+    }
+
+    @GetMapping("/detalle/{id}")
+    public ResponseEntity<Producto> getProductoDetalle(@PathVariable Long id) {
+        Producto producto = productoService.findById(id);
+        logger.info("Producto encontrado: {}", producto);
+        if (producto != null) {
+            return ResponseEntity.ok(producto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

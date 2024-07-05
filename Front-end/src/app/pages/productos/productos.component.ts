@@ -8,22 +8,28 @@ import { Producto } from 'src/app/models/producto.model';
   styleUrls: ['./productos.component.scss']
 })
 export class ProductosComponent implements OnInit {
-  products: Producto[] = [];
+  productos: Producto[] = [];
   filteredProducts: Producto[] = [];
-  selectedBrands: string[] = [];
-  selectedCorte: string[] = [];
-  selectedColors: string[] = [];
+  marcas: string[] = [];
+  cortes: string[] = [];
+  colores: string[] = [];
+  selectedMarcas: string[] = [];
+  selectedCortes: string[] = [];
+  selectedColores: string[] = [];
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.getProducts();
+    this.getMarcas();
+    this.getCortes();
+    this.getColores();
   }
 
   getProducts(): void {
     this.apiService.getProducts().subscribe(
       (data: Producto[]) => {
-        this.products = data;
+        this.productos = data;
         this.filteredProducts = data;
       },
       (error) => {
@@ -32,46 +38,85 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  onBrandChange(event: any): void {
-    const brand = event.target.value;
-    if (event.target.checked) {
-      this.selectedBrands.push(brand);
-    } else {
-      const index = this.selectedBrands.indexOf(brand);
-      if (index > -1) {
-        this.selectedBrands.splice(index, 1);
+  getMarcas(): void {
+    this.apiService.getMarcas().subscribe(
+      (data: string[]) => {
+        this.marcas = data;
+      },
+      (error) => {
+        console.error('Error fetching marcas', error);
       }
+    );
+  }
+
+  getCortes(): void {
+    this.apiService.getCortes().subscribe(
+      (data: string[]) => {
+        this.cortes = data;
+      },
+      (error) => {
+        console.error('Error fetching cortes', error);
+      }
+    );
+  }
+
+  getColores(): void {
+    this.apiService.getColores().subscribe(
+      (data: string[]) => {
+        this.colores = data;
+      },
+      (error) => {
+        console.error('Error fetching colores', error);
+      }
+    );
+  }
+
+  onMarcaChange(event: any): void {
+    const selectedMarca = event.target.value;
+    if (event.target.checked) {
+      this.selectedMarcas.push(selectedMarca);
+    } else {
+      this.selectedMarcas = this.selectedMarcas.filter(marca => marca !== selectedMarca);
     }
     this.filterProducts();
   }
 
-
-  toggleCorte(corte: string): void {
-    const index = this.selectedCorte.indexOf(corte);
-    if (index > -1) {
-      this.selectedCorte.splice(index, 1);
+  onCorteChange(event: any): void {
+    const selectedCorte = event.target.value;
+    if (event.target.checked) {
+      this.selectedCortes.push(selectedCorte);
     } else {
-      this.selectedCorte.push(corte);
+      this.selectedCortes = this.selectedCortes.filter(corte => corte !== selectedCorte);
     }
     this.filterProducts();
   }
 
-  toggleColor(color: string): void {
-    const index = this.selectedColors.indexOf(color);
-    if (index > -1) {
-      this.selectedColors.splice(index, 1);
+  onColorChange(event: any): void {
+    const selectedColor = event.target.value;
+    if (event.target.checked) {
+      this.selectedColores.push(selectedColor);
     } else {
-      this.selectedColors.push(color);
+      this.selectedColores = this.selectedColores.filter(color => color !== selectedColor);
     }
     this.filterProducts();
   }
 
   filterProducts(): void {
-    this.filteredProducts = this.products.filter(product => {
-      const brandMatch = this.selectedBrands.length === 0 || this.selectedBrands.includes(product.marca);
-      const corteMatch = this.selectedCorte.length === 0 || this.selectedCorte.includes(product.corte);
-      const colorMatch = this.selectedColors.length === 0 || this.selectedColors.includes(product.color);
-      return brandMatch && corteMatch && colorMatch;
+    this.filteredProducts = this.productos.filter(product => {
+      const matchMarca = this.selectedMarcas.length ? this.selectedMarcas.includes(product.marca.nombre) : true;
+      const matchCorte = this.selectedCortes.length ? this.selectedCortes.includes(this.getCorteFromDescription(product.descripcion)) : true;
+      const matchColor = this.selectedColores.length ? this.selectedColores.includes(product.color) : true;
+      return matchMarca && matchCorte && matchColor;
     });
+  }
+
+  getCorteFromDescription(descripcion: string): string {
+    try {
+      const descObj = JSON.parse(descripcion);
+      return descObj.corte;
+    } catch (e) {
+      console.error('Error parsing description JSON:', e);
+      return '';
+    }
   }
 }

@@ -1,11 +1,11 @@
 package com.utp.desarrollo.backend.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,21 +21,58 @@ public class Producto {
     private Long id;
     @Column(length = 150)
     private String nombre;
-    @Column(length = 250)
+    @Column(length = 250, columnDefinition = "json")
     private String descripcion;
-    private String marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    @JsonIgnoreProperties("productos")
+    private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    @JsonIgnoreProperties("productos")
+    private Categoria categoria;
+
     @Column(name = "precio_venta")
     private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
-    private Integer stock;
+    private String color;
     private Double descuento;
     @Column(name = "precio_regular")
     private Double precioRegular;
     @Column(name = "imagen_url")
     private String imagenUrl;
-    @Column(length = 50)
-    private String corte;
-    @Column(length = 50)
-    private String color;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "imagen_url_sec", joinColumns = @JoinColumn(name = "producto_id"))
+    @Column(name = "url")
+    private List<String> imagenUrlSec;
+
+
+    ;@OneToMany
+    @JoinColumn(name = "id_producto")
+    @JsonIgnore
+    private List<DetalleVenta> detalleVenta;
+
+    @OneToMany
+    @JoinColumn(name = "id_producto")
+    @JsonIgnore
+    private List<Inventario> inventario;
+
+    public String toString() {
+        return "Producto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", precioVenta=" + precioVenta +
+                ", precioCompra=" + precioCompra +
+                ", color='" + color + '\'' +
+                ", descuento=" + descuento +
+                ", precioRegular=" + precioRegular +
+                ", imagenUrl='" + imagenUrl + '\'' +
+                ", imagenUrlSec=" + imagenUrlSec +
+                '}';
+    }
+
 }

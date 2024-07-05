@@ -3,10 +3,8 @@ package com.utp.desarrollo.backend.models;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,30 +19,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "categorias")
+public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(length = 50)
     private String nombre;
-    @Column(length = 50)
-    private String apellidos;
-    @Column(length = 12)
-    @JsonIgnore
-    private String contrasena;
-    @Column(length = 8)
-    private String dni;
-    @Column(length = 50)
-    private String email;
-    @Column(length = 9)
-    private String telefono;
-    @Column(length = 15)
-    private String rol;
-    private boolean estado;
 
-    @OneToMany()
-    @JoinColumn(name = "id_usuario")
+    @OneToMany
+    @JoinColumn(name = "id_categoria")
     @JsonIgnore
-    private List<Venta> ventas;
+    private List<Producto> productos;
 }

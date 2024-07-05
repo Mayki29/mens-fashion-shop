@@ -12,7 +12,7 @@ import { CarritoComponent } from './pages/carrito/carrito.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'productos', component: ProductosComponent },
-  { path: 'producto', component: ProductoComponent },
+  { path: 'producto/:id', component: ProductoComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'pago', component: PagoComponent },

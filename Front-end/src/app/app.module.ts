@@ -20,6 +20,7 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
 
 import { AppRoutingModule } from './app-routing.module';
 import { ApiService } from './services/api.service';
+import { CapitalizePipe } from './capitalize.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ApiService } from './services/api.service';
     LoginComponent,
     CarritoComponent,
     CarritoProductComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    CapitalizePipe
   ],
   imports: [
     BrowserModule,
