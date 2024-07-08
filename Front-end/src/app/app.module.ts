@@ -17,6 +17,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { CarritoComponent } from './pages/carrito/carrito.component';
 import { CarritoProductComponent } from './shared/pagos/carrito-product/carrito-product.component';
 import { ProductCardComponent } from './shared/product-card/product-card.component';
+import { NosotrosComponent } from './pages/nosotros/nosotros.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ApiService } from './services/api.service';
@@ -36,7 +37,8 @@ import { CapitalizePipe } from './capitalize.pipe';
     CarritoComponent,
     CarritoProductComponent,
     ProductCardComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    NosotrosComponent
   ],
   imports: [
     BrowserModule,
