@@ -22,6 +22,7 @@ import { NosotrosComponent } from './pages/nosotros/nosotros.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ApiService } from './services/api.service';
 import { CapitalizePipe } from './capitalize.pipe';
+import { PortalComponent } from './pages/portal/portal.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { CapitalizePipe } from './capitalize.pipe';
     CarritoProductComponent,
     ProductCardComponent,
     CapitalizePipe,
-    NosotrosComponent
+    NosotrosComponent,
+    PortalComponent
   ],
   imports: [
     BrowserModule,

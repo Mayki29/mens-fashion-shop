@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PagoComponent } from './pages/pago/pago.component';
 import { CarritoComponent } from './pages/carrito/carrito.component';
 import {NosotrosComponent } from './pages/nosotros/nosotros.component';
+import {PortalComponent } from './pages/portal/portal.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'pago', component: PagoComponent },
   { path: 'carrito', component: CarritoComponent },
   { path: 'nosotros', component: NosotrosComponent },
+  { path: 'portaladmin', component: PortalComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },
 ];
