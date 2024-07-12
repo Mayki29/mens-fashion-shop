@@ -38,6 +38,7 @@ export class ApiService {
     return this.http.get<Producto>(`${this.apiUrl}/detalle/${id}`)
       .pipe(catchError(this.handleError));
   }
+  //login(request: Cliente)
 
   private handleError(error: any) {
     console.error('An error occurred', error);
