@@ -8,19 +8,31 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.utp.desarrollo.backend.models.Inventario;
 import com.utp.desarrollo.backend.models.Producto;
+import com.utp.desarrollo.backend.models.dao.IColorDao;
+import com.utp.desarrollo.backend.services.IColorService;
+import com.utp.desarrollo.backend.services.IInventarioService;
+import com.utp.desarrollo.backend.services.IMarcaService;
 import com.utp.desarrollo.backend.services.IProductoService;
+import com.utp.desarrollo.backend.services.ITallaService;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -32,6 +44,18 @@ public class ProductoController {
 
     @Autowired
     private IProductoService productoService;
+
+    @Autowired
+    private IInventarioService inventarioService;
+    
+    @Autowired
+    private IColorService colorService;
+    
+    @Autowired
+    private ITallaService tallaService;
+
+    @Autowired
+    private IMarcaService marcaService;
 
     @GetMapping
     public List<Producto> findAllProductos() {
@@ -46,6 +70,11 @@ public class ProductoController {
     @PostMapping
     public Producto saveProducto(@RequestBody Producto producto) {
         return productoService.save(producto);
+    }
+
+    @GetMapping("/inventario")
+    public List<Inventario> findAllInventario(){
+        return inventarioService.findAll();
     }
 
     @PostMapping("/upload")
@@ -132,5 +161,15 @@ public class ProductoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/form-producto-elements")
+    public Map<String,Object> getFormProductosElements() {
+        Map<String, Object> formElements = new HashMap<>();
+        formElements.put("colores", colorService.findAll());
+        formElements.put("tallas", tallaService.findAll());
+        formElements.put("marcas", marcaService.findAll());
+        return formElements;
+    }
+    
 
 }
