@@ -26,55 +26,73 @@
             <form id="productForm" class="container ">
                 <h1>Agregar Producto</h1>
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="producto!.nombre" required>
 
                 <label for="fotdscrp">Foto Principal:</label>
                 <input type="file" id="mainPhoto" name="mainPhoto" accept="image/*" required>
 
                 <label for="description">Descripción:</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" [(ngModel)]="producto!.descripcion" required></textarea>
 
                 <label for="descriptionPhotos">Fotos de la Descripción:</label>
                 <input type="file" id="descriptionPhotos1" name="descriptionPhotos1" accept="image/*" multiple>
 
-                <label for="stock">Cantidad de Stock:</label>
-                <input type="number" min="" id="stock" name="stock" required>
-
                 <label for="price">Precio Compra:</label>
-                <input type="number" min="0" id="precioCompra" name="precioCompra" step="0.01" required>
+                <input type="number" min="0" id="precioCompra" name="precioCompra" step="0.01"
+                    [(ngModel)]="producto!.precioCompra" required>
 
                 <label for="price">Precio Venta:</label>
-                <input type="number" min="0" id="precioVenta" name="precioVenta" step="0.01" required>
+                <input type="number" min="0" id="precioVenta" name="precioVenta" step="0.01"
+                    [(ngModel)]="producto!.precioVenta" required>
 
                 <label for="price">Precio Regular:</label>
-                <input type="number" min="0" id="precioRegular" name="precioRegular" step="0.01" required>
+                <input type="number" min="0" id="precioRegular" name="precioRegular" step="0.01"
+                    [(ngModel)]="producto!.precioRegular" required>
 
-                <div class="inventario-container">
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" name="categoria" [(ngModel)]="producto!.categoria" required>
+                    <option *ngFor="let cat of categorias" [ngValue]="cat">{{cat.nombre}}</option>
+                </select>
+
+                <label for="marca">Marca:</label>
+                <select id="marca" name="marca" [(ngModel)]="producto!.marca" required>
+                    <option *ngFor="let m of marcas" [ngValue]="m">{{m.nombre}}</option>
+                </select>
+                <select name="" id="">
+                    <option value="">A</option>
+                    <option value="">B</option>
+                    <option value="">C</option>
+                    <option value="">D</option>
+                    <option value="">E</option>
+                </select>
+
+                <div class="inventario-container mt-2">
                     <p>Inventario</p>
                     <div class="input-group mb-3">
-                        
-                        <select class="form-control" place id="colors" [(ngModel)]="color.nombre" name="colors" required>
-                            <option disabled selected>color</option>
-                            <option value="negro">Negro</option>
-                            <option value="blanco">Blanco</option>
-                            <option value="rojo">Rojo</option>
-                            <option value="azul">Azul</option>
-                        </select>
+                        <div class="form-control border-0">
+                            <label for="colors">Color:</label>
+                            <select class="form-control" id="colors" [(ngModel)]="color" name="colors" required>
+                                <option *ngFor="let c of colores" [ngValue]="c">{{c.nombre}}</option>
+                                <!--option disabled selected>color</option-->
+                            </select>
+                        </div>
+                        <div class="form-control border-0">
+                            <label for="sizes">Talla:</label>
+                            <select class="form-control" [(ngModel)]="talla" id="sizes" name="sizes" required>
+                                <option *ngFor="let t of tallas" [ngValue]="t">{{t.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="form-control border-0">
+                            <label for="stock">Stock:</label>
+                            <input class="form-control" [(ngModel)]="stock" type="number" min="0" id="stock"
+                                name="stock" placeholder="Stock" required>
+                        </div>
 
-                        <select class="form-control" [(ngModel)]="talla.nombre" id="sizes" name="sizes" required>
-                            <option disabled selected>Talla</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                        </select>
-
-                        <input class="form-control" [(ngModel)]="stock" type="number" min="" id="stock" name="stock" placeholder="Stock" required>
                         <button class="form-control" (click)="agregarInventario()" id="btnAddInventario">+</button>
-                        
-                      </div>
+
+                    </div>
                     <div class="inventario-options">
-                        
+
                     </div>
                     <table class="table">
                         <thead>
@@ -85,8 +103,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let i of inventario">
-                                <td>{{i.color?.nombre}}</td>
+                            <tr *ngFor="let i of inventario; let ind = index">
+                                <td>
+                                    <select class="" [(ngModel)]="inventario[ind].color" [name]="'color'+ind">
+                                        <option *ngFor="let c of colores;  trackBy: trackByFn" [ngValue]="c">{{c.nombre}}</option>
+                                        
+                                    </select>
+                                    
+                                </td>
                                 <td>{{i.talla?.nombre}}</td>
                                 <td>{{i.stock}}</td>
                             </tr>
@@ -94,18 +118,7 @@
                     </table>
 
                 </div>
-
-
-
-
-
-                <label for="sizes">Marca:</label>
-                <select id="sizes" name="sizes" required>
-                    <option value="S">Overtake</option>
-                    <option value="M">SkillBoard</option>
-                </select>
-
-                <button type="submit">Agregar Producto</button>
+                <button type="button" (click)="saveProducto(producto!)">Agregar Producto</button>
             </form>
         </div><br>
 

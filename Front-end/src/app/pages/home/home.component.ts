@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,8 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  usuario?: Usuario;
+
   images = ["assets/images/slide-1.jpeg", "assets/images/slide-2.jpeg","assets/images/slide-3.jpeg"];
   customOptions: OwlOptions = {
     loop: true,
@@ -34,5 +37,7 @@ export class HomeComponent implements OnInit {
   };
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.usuario = JSON.parse(localStorage.getItem("usuario")||'')
+  }
 }

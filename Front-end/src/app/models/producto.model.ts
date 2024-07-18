@@ -3,6 +3,7 @@
 import { Marca } from './marca.model';
 import { Categoria } from './categoria.model';
 import { Talla } from './talla.model';
+import { Inventario } from './inventario.model';
 
 export interface Producto {
   id: number;
@@ -18,4 +19,5 @@ export interface Producto {
   imagenUrl: string;
   imagenUrlSec: string[];
   tallas: Talla[];
+  inventario: Inventario[];
 }

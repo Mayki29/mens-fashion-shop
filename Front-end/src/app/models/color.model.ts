@@ -1,7 +1,4 @@
-export class Color {
+export interface Color {
     id?: number;
     nombre?: string;
-    constructor() {
-        this.nombre = ''
-    }
   }

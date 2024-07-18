@@ -6,12 +6,14 @@ import { Observable } from 'rxjs';
 import { Producto } from '../models/producto.model';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private apiUrl = 'http://localhost:8080/api/producto';
+  private apiAuth = "http://localhost:8080/auth"
 
   constructor(private http: HttpClient) { }
 
@@ -38,7 +40,23 @@ export class ApiService {
     return this.http.get<Producto>(`${this.apiUrl}/detalle/${id}`)
       .pipe(catchError(this.handleError));
   }
-  //login(request: Cliente)
+  getFormProductosElements(): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/form-producto-elements`)
+      .pipe(catchError(this.handleError));
+  }
+  login(request: Usuario): Observable<any>{
+    return this.http.post<any>(`${this.apiAuth}/login`, request)
+      .pipe(catchError(this.handleError))
+  }
+  registrarUsuario(request: Usuario): Observable<any>{
+    return this.http.post<any>(`${this.apiAuth}/register`, request)
+      .pipe(catchError(this.handleError))
+  }
+
+  saveProducto(request: Producto): Observable<Producto>{
+    return this.http.post<Producto>(this.apiUrl, request)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: any) {
     console.error('An error occurred', error);
