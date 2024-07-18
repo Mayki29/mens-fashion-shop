@@ -1,8 +1,6 @@
+<h1 class="center">Portal del administrador</h1>
 <div>
-    <h1 class="center">Portal del administrador</h1>
-</div>
-<div>
-    <div class="container">
+    <div class="container fondo">
         <form>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
@@ -18,124 +16,143 @@
                 <label for="floatingPassword"> Ingresar</label></button>
         </div>
     </div>
-
+    // FIN DE LOGIN administrador
     <body><br>
-        <div>
+<div class="container">
+    <h1>Agregar Producto </h1><br>
+    <form>
+      <div class="form-group">
+        <label for="nombreProducto">Nombre del Producto:</label>
+        <input class="form-control" [(ngModel)]="nombreProducto" type="text" id="nombreProducto" name="nombreProducto" placeholder="Ingresa el nombre" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="fotoPrincipal">Foto Principal:</label>
+        <input type="file" class="form-control" id="fotoPrincipal" name="fotoPrincipal">
+      </div>
+  
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <textarea class="form-control" [(ngModel)]="descripcion" id="descripcion" name="descripcion" required></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="fotosDescripcion">Fotos de la Descripción:</label>
+        <input type="file" class="form-control" id="fotosDescripcion" name="fotosDescripcion" multiple>
+      </div>
 
-            <h1>Admin Portal - Tienda de Ropa</h1>
-            <form id="productForm" class="container ">
-                <h1>Agregar Producto</h1>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+      <div class="form-group">
+        <label for="talla">Talla</label>
+        <select class="form-control" [(ngModel)]="talla.nombre" id="sizes" name="sizes" placeholder="talla" required>
+            <option disabled selected>Talla</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="color">Color</label>
+        <select class="form-control" [(ngModel)]="color.nombre" id="colors" name="colors" required>
+            <option disabled selected>Color</option>
+            <option value="negro">Negro</option>
+            <option value="blanco">Blanco</option>
+            <option value="rojo">Rojo</option>
+            <option value="azul">Azul</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="cantidadStock">Cantidad de Stock:</label>
+        <input class="form-control" [(ngModel)]="stock" type="number" id="cantidadStock" name="cantidadStock" min="0" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="precioCompra">Precio Compra:</label>
+        <input class="form-control" [(ngModel)]="precioCompra" type="number" id="precioCompra" name="precioCompra" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="precioVenta">Precio Venta:</label>
+        <input class="form-control" [(ngModel)]="precioVenta" type="number" id="precioVenta" name="precioVenta" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="precioRegular">Precio Regular:</label>
+        <input class="form-control" type="number" id="precioRegular" name="precioRegular">
+      </div>
 
-                <label for="fotdscrp">Foto Principal:</label>
-                <input type="file" id="mainPhoto" name="mainPhoto" accept="image/*" required>
+      <div class="form-group">
+        <label for="marca">Marca:</label>
+        <select class="form-control" [(ngModel)]="marca" id="marca" name="marca">
+          <option value="Overtake">Overtake</option>
+          <option value="OtraMarca">Otra Marca</option>
+        </select>
+      </div>
+  
+      <button class="btn btn-success" (click)="agregarProducto()">Agregar Producto</button>
+    </form>
+  </div><br>
+</body>
+  <div class="container-md">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Color</th>
+          <th>Talla</th>
+          <th>Precio de Compra</th>
+          <th>Precio de Venta</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of inventario; let index = index">
+          <td>{{i.nombreProducto}}</td>
+          <td >{{i.color?.nombre}}</td>
+          <td>{{i.talla?.nombre}}</td>
+          <td>{{i.precioCompra}}</td>
+          <td>{{i.precioVenta}}</td>
+          <td>{{i.stock}}</td>
+          <td>
+            <button (click)="editarInventario(index)">Editar</button>
+            <button (click)="eliminarInventario(index)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="modoEdicion" >
+        <p class="text-center"><strong class="text-center">Editar Inventario</strong></p>
+        <div class="input-group mb-3">
+            <input class="form-control" [(ngModel)]="nombreProductoEditado" type="text" id="nombreProductoEditado" name="nombreProductoEditado" placeholder="Nombre del Producto" required>
+            
+            <select class="form-control" [(ngModel)]="colorEditado.nombre" id="colorsEditado" name="colorsEditado" required>
+                <option disabled selected>Color</option>
+                <option value="negro">Negro</option>
+                <option value="blanco">Blanco</option>
+                <option value="rojo">Rojo</option>
+                <option value="azul">Azul</option>
+            </select>
 
-                <label for="description">Descripción:</label>
-                <textarea id="description" name="description" required></textarea>
+            <select class="form-control" [(ngModel)]="tallaEditada.nombre" id="sizesEditado" name="sizesEditado" required>
+                <option disabled selected>Talla</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+            </select>
 
-                <label for="descriptionPhotos">Fotos de la Descripción:</label>
-                <input type="file" id="descriptionPhotos1" name="descriptionPhotos1" accept="image/*" multiple>
-
-                <label for="stock">Cantidad de Stock:</label>
-                <input type="number" min="" id="stock" name="stock" required>
-
-                <label for="price">Precio Compra:</label>
-                <input type="number" min="0" id="precioCompra" name="precioCompra" step="0.01" required>
-
-                <label for="price">Precio Venta:</label>
-                <input type="number" min="0" id="precioVenta" name="precioVenta" step="0.01" required>
-
-                <label for="price">Precio Regular:</label>
-                <input type="number" min="0" id="precioRegular" name="precioRegular" step="0.01" required>
-
-                <div class="inventario-container">
-                    <p>Inventario</p>
-                    <div class="input-group mb-3">
-                        
-                        <select class="form-control" place id="colors" [(ngModel)]="color.nombre" name="colors" required>
-                            <option disabled selected>color</option>
-                            <option value="negro">Negro</option>
-                            <option value="blanco">Blanco</option>
-                            <option value="rojo">Rojo</option>
-                            <option value="azul">Azul</option>
-                        </select>
-
-                        <select class="form-control" [(ngModel)]="talla.nombre" id="sizes" name="sizes" required>
-                            <option disabled selected>Talla</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                        </select>
-
-                        <input class="form-control" [(ngModel)]="stock" type="number" min="" id="stock" name="stock" placeholder="Stock" required>
-                        <button class="form-control" (click)="agregarInventario()" id="btnAddInventario">+</button>
-                        
-                      </div>
-                    <div class="inventario-options">
-                        
-                    </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Color</th>
-                                <th>Talla</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let i of inventario">
-                                <td>{{i.color?.nombre}}</td>
-                                <td>{{i.talla?.nombre}}</td>
-                                <td>{{i.stock}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-
-
-
-
-
-                <label for="sizes">Marca:</label>
-                <select id="sizes" name="sizes" required>
-                    <option value="S">Overtake</option>
-                    <option value="M">SkillBoard</option>
-                </select>
-
-                <button type="submit">Agregar Producto</button>
-            </form>
-        </div><br>
-
-    </body><br>
-    <h1 class="center">INVENTARIO</h1>
-    <div>
-        <table class="table table-striped table-bordered inventory">
-            <thead>
-                <th>TItulo</th>
-                <th>Cantidad</th>
-                <th>Color</th>
-                <th>Corte</th>
-                <th>Talla</th>
-                <th width="250px">Action</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>sin valor</td>
-                    <td>sin valor</td>
-                    <td>sin valor</td>
-                    <td>sin valor</td>
-                    <td>sin valor</td>
-                    <td><button type="button" class="btn btn-primary">Editar</button>
-                        <button type="button" class="btn btn-primary">
-                            Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot align="center">
-                <button type="button" class="btn btn-primary ">GUARDAR</button>
-            </tfoot>
-        </table>
+            <input class="form-control" [(ngModel)]="precioCompraEditado" type="number" id="precioCompraEditado" name="precioCompraEditado" placeholder="Precio de Compra" required>
+            
+            <input class="form-control" [(ngModel)]="precioVentaEditado" type="number" id="precioVentaEditado" name="precioVentaEditado" placeholder="Precio de Venta" required>
+            
+            <input class="form-control" [(ngModel)]="stockEditado" type="number" min="0" id="stockEditado" name="stockEditado" placeholder="Stock" required>
+            
+            <button class="form-control" (click)="guardarEdicion()" id="btnGuardarEdicion">Guardar</button>
+        </div>
     </div>
+  </div>
+  

@@ -1,0 +1,37 @@
+
+<div class="container">
+    <div class="sidebar">
+      <ul>
+        <li (click)="seleccionarOpcion('compras')">Mis Compras</li>
+        <li (click)="seleccionarOpcion('seguimiento')">Seguimiento</li>
+        <li (click)="seleccionarOpcion('editar')">Editar Pagos</li>
+      </ul>
+    </div>
+  
+    <div class="content">
+      <div *ngIf="opcionSeleccionada === 'compras'">
+        <h2>Mis Compras</h2>
+        <div class="input-group me-3">
+            <input type="text" class="form-control" id="order-filter-search" placeholder="Buscar por Nombre de articulo">
+            <button class="btn btn-secondary ms-2" id="orden-id">Buscar</button>
+          </div>
+        <p>Aquí se mostrarán los detalles de tus compras.</p>
+        
+      </div>
+      <div *ngIf="opcionSeleccionada === 'seguimiento'">
+        <h2>Seguimiento</h2>
+        <div class="d-flex align-items-center mb-3">
+          <div class="input-group me-3">
+            <input type="text" class="form-control" id="order-filter-search" placeholder="Buscar por Nº de pedido">
+            <button class="btn btn-secondary ms-2" id="orden-id">Buscar</button>
+          </div>
+        </div>
+        <p>Aquí podrás seguir el estado de tus pedidos.</p>
+      </div>
+      <div *ngIf="opcionSeleccionada === 'editar'">
+        <h2>Editar Pagos</h2>
+        <p>Aquí podrás editar la información de tus pagos.</p>
+      </div>
+    </div>
+  </div>
+  
