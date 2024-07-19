@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    height: 100vh;
+    
+  }
+  
+  .sidebar {
+    width: 325px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 7px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar li:hover {
+    background-color: #7c7c7cc7;
+    border-radius: 5px;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+    background-color: #4b799727;
+    border-radius: 7px;
+  }
+  

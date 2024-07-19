@@ -10,6 +10,7 @@ import { PagoComponent } from './pages/pago/pago.component';
 import { CarritoComponent } from './pages/carrito/carrito.component';
 import {NosotrosComponent } from './pages/nosotros/nosotros.component';
 import {PortalComponent } from './pages/portal/portal.component';
+import { MiscomprasComponent } from './pages/miscompras/miscompras.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'carrito', component: CarritoComponent },
   { path: 'nosotros', component: NosotrosComponent },
   { path: 'portaladmin', component: PortalComponent },
+  { path: 'miscompras', component: MiscomprasComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },
 ];
