@@ -22,13 +22,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-
 
 @RestController
 @RequestMapping("/api/producto")
@@ -39,6 +37,18 @@ public class ProductoController {
 
     @Autowired
     private IProductoService productoService;
+
+    @Autowired
+    private IInventarioService inventarioService;
+
+    @Autowired
+    private IColorService colorService;
+
+    @Autowired
+    private ITallaService tallaService;
+
+    @Autowired
+    private IMarcaService marcaService;
 
     @GetMapping
     public List<Producto> findAllProductos() {
@@ -57,6 +67,11 @@ public class ProductoController {
     @PostMapping
     public Producto saveProducto(@RequestBody Producto producto) {
         return productoService.save(producto);
+    }
+
+    @GetMapping("/inventario")
+    public List<Inventario> findAllInventario() {
+        return inventarioService.findAll();
     }
 
     @PostMapping("/upload")

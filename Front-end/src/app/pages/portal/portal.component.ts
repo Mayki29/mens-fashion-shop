@@ -1,108 +1,121 @@
 import { Component, OnInit } from '@angular/core';
+import { Categoria } from 'src/app/models/categoria.model';
 import { Color } from 'src/app/models/color.model';
 import { Inventario } from 'src/app/models/inventario.model';
+import { Marca } from 'src/app/models/marca.model';
+import { Producto } from 'src/app/models/producto.model';
 import { Talla } from 'src/app/models/talla.model';
+import { ApiService } from 'src/app/services/api.service';
 
-
-interface InventarioItem {
-  nombreProducto: string;
-  color: { nombre: string };
-  talla: { nombre: string };
-  precioCompra: number;
-  precioVenta: number;
-  stock: number;
+interface FormProductosData {
+  colores: Color[];
+  tallas: Talla[];
+  marcas: Marca[];
+  categorias: Categoria[];
 }
-
 @Component({
   selector: 'app-portal',
   templateUrl: './portal.component.html',
-  styleUrls: ['./portal.component.scss']
+  styleUrls: ['./portal.component.scss'],
 })
 export class PortalComponent implements OnInit {
-  nombreProducto: string = '';
-  descripcion: string = '';
-  color: { nombre: string } = { nombre: '' };
-  talla: { nombre: string } = { nombre: '' };
-  stock: number = 0;
-  precioCompra: number = 0;
-  precioVenta: number = 0;
-  precioRegular: number | null = null;
-  marca: string = 'Overtake';
-  inventario: any[] = []; // Aquí puedes definir la interfaz para los productos
-  modoEdicion: boolean = false;
-  indexEdicion: number | null = null;
+  inventario: Inventario[] = [];
+  colores: Color[] = [];
+  tallas: Talla[] = [];
+  marcas: Marca[] = [];
+  categorias: Categoria[] = [];
 
-  // editar inventario
-  nombreProductoEditado: string = '';
-  colorEditado: { nombre: string } = { nombre: '' };
-  tallaEditada: { nombre: string } = { nombre: '' };
-  precioCompraEditado: number = 0;
-  precioVentaEditado: number = 0;
-  stockEditado: number = 0;
+  color?: Color = {};
+  talla?: Talla = {};
+  stock?: number = 0;
+  item: Inventario ;
 
-  constructor() { }
+  producto?: Producto;
+
+  constructor(private apiService: ApiService) {
+    this.producto = {
+      id: 0,
+      nombre: '',
+      descripcion: {},
+      precioVenta: 0,
+      precioRegular: 0,
+      precioCompra: 0,
+      marca: {
+        id: 0,
+        nombre: '',
+      },
+      categoria: { id: 0, nombre: '' },
+    
+      descuento: 0,
+      imagenUrl: '',
+      imagenUrlSec: [],
+      
+      inventario: [],
+    };
+    this.item ={
+      id: 0,
+      talla: {}
+      
+    };
+
+  }
 
   ngOnInit(): void {
-    // lógica o datos 
+    this.getFormProductosElements();
+    console.log(this.colores, this.tallas, this.marcas);
   }
 
-  agregarProducto() {
-    if (this.nombreProducto && this.descripcion && this.stock >= 0 && this.precioCompra >= 0 && this.precioVenta >= 0) {
-      const nuevoProducto = {
-        nombreProducto: this.nombreProducto,
-        descripcion: this.descripcion,
-        stock: this.stock,
-        precioCompra: this.precioCompra,
-        precioVenta: this.precioVenta,
-        precioRegular: this.precioRegular,
-        marca: this.marca,
-        color: { nombre: this.color.nombre },
-        talla: { nombre: this.talla.nombre },
-      };
-      this.inventario.push(nuevoProducto);
-      this.limpiarFormulario();
-    }
+  agregarInventario() {
+    this.item.color = { ...this.color };
+    this.item.talla = { ...this.talla };
+    this.item.stock = this.stock;
+
+    this.inventario.push({ ...this.item });
+    console.log(this.inventario)
   }
 
-  limpiarFormulario() {
-    this.nombreProducto = '';
-    this.descripcion = '';
-    this.stock = 0;
-    this.precioCompra = 0;
-    this.precioVenta = 0;
-    this.precioRegular = null;
-    this.marca = 'Overtake';
+  // editarItem(index: number, item:Inventario){
+  //   this.color = item.color;
+  //   this.talla = item.talla;
+  //   this.stock = item.stock;
+
+
+  // }
+
+  // eliminarItem(index: number){
+  //   this.inventario.
+  // }
+
+  getFormProductosElements() {
+    this.apiService.getFormProductosElements().subscribe({
+      next: (data: FormProductosData) => {
+        this.colores = data.colores;
+        this.tallas = data.tallas;
+        this.marcas = data.marcas;
+        this.categorias = data.categorias;
+        if (this.marcas.length > 0 && this.producto) {
+          this.producto.marca = this.marcas[0];
+          this.producto.categoria = this.categorias[0];
+          this.color = this.colores[0];
+          this.talla = this.tallas[0];
+        }
+      },
+      error: (e) => {},
+    });
   }
 
-  editarInventario(index: number) {
-    this.modoEdicion = true;
-    this.indexEdicion = index;
-    const producto = this.inventario[index];
-    this.nombreProductoEditado = producto.nombreProducto;
-    this.colorEditado = producto.color || { nombre: '' };
-    this.tallaEditada = producto.talla || { nombre: '' };
-    this.precioCompraEditado = producto.precioCompra;
-    this.precioVentaEditado = producto.precioVenta;
-    this.stockEditado = producto.stock;
-  }
+  saveProducto(producto: Producto) {
+    producto.inventario = [...this.inventario];
 
-  guardarEdicion() {
-    if (this.indexEdicion !== null) {
-      const productoEditado = {
-        nombreProducto: this.nombreProductoEditado,
-        color: this.colorEditado,
-        talla: this.tallaEditada,
-        precioCompra: this.precioCompraEditado,
-        precioVenta: this.precioVentaEditado,
-        stock: this.stockEditado
-      };
-      this.inventario[this.indexEdicion] = productoEditado;
-      this.modoEdicion = false;
-      this.indexEdicion = null;
-    }
+    this.apiService.saveProducto(producto).subscribe({
+      next: (response) => {
+        this.producto = response;
+        console.log('Guardar =>', 'Registrado correctamente');
+      },
+      error: (e) => {},
+    });
   }
-
-  eliminarInventario(index: number) {
-    this.inventario.splice(index, 1);
+  trackByFn(index: number, item: Inventario) {
+    return item.id;
   }
 }

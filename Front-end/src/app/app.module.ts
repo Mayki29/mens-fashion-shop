@@ -24,7 +24,6 @@ import { ApiService } from './services/api.service';
 import { CapitalizePipe } from './capitalize.pipe';
 import { PortalComponent } from './pages/portal/portal.component';
 import { MiscomprasComponent } from './pages/miscompras/miscompras.component';
-import { PortalComponent } from './pages/portal/portal.component';
 import { ProductFilterComponent } from './product-filter/product-filter.component';
 
 @NgModule({
