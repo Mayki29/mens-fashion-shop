@@ -48,6 +48,7 @@ export class ApiService {
     return this.http.get<Producto[]>(`${this.apiUrl}/filtrar`, { params })
       .pipe(catchError(this.handleError));
   }
+  //login(request: Cliente)
 
   private handleError(error: any) {
     console.error('An error occurred', error);
