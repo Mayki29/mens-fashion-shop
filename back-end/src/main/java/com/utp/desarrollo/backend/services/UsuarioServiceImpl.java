@@ -6,6 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.utp.desarrollo.backend.models.Rol;
 import com.utp.desarrollo.backend.models.Usuario;
 import com.utp.desarrollo.backend.models.dao.IUsuarioDao;
 
@@ -25,16 +26,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
         return (Usuario) usuarioDao.findById(id).orElse(null);
     }
 
-    @Override
-    public Usuario login(String email, String contrasena) {
-        String contrasenaEncriptada = DigestUtils.sha512Hex(contrasena);
-        return usuarioDao.login(email, contrasenaEncriptada);
-    }
+    // @Override
+    // public Usuario login(String email, String contrasena) {
+    //     String contrasenaEncriptada = DigestUtils.sha512Hex(contrasena);
+    //     return usuarioDao.login(email, contrasenaEncriptada);
+    // }
 
     @Override
     public Usuario save(Usuario usuario) {
         Usuario newUsuario = usuario;
-        newUsuario.setRol("Cliente");
+        newUsuario.setRol(Rol.USER);
         newUsuario.setEstado(true);
         newUsuario.setContrasena(DigestUtils.sha512Hex(usuario.getContrasena()));
         return usuarioDao.save(newUsuario);
@@ -52,6 +53,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public void delete(Long id) {
         usuarioDao.deleteById(id);
 
+    }
+
+    @Override
+    public Usuario login(String email, String contrasena) {
+       return null;
     }
 
 }

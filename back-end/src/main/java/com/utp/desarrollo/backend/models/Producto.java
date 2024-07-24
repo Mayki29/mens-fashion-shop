@@ -8,16 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +26,7 @@ public class Producto {
     @Column(length = 250, columnDefinition = "json")
     private String descripcion;
 
+
     @ManyToOne
     @JoinColumn(name = "id_marca")
     @JsonIgnoreProperties("productos")
@@ -45,20 +36,20 @@ public class Producto {
     @JoinColumn(name = "id_categoria")
     @JsonIgnoreProperties("productos")
     private Categoria categoria;
-
-    @Column(name = "precio_venta")
-    private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
-    private String color;
-    private Double descuento;
     @Column(name = "precio_regular")
     private Double precioRegular;
+    @Column(name = "precio_venta")
+    private Double precioVenta;
+
+    @Transient
+    private double descuento;
+
     @Column(name = "imagen_url")
     private String imagenUrl;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "imagen_url_sec", joinColumns = @JoinColumn(name = "producto_id"))
-    @Column(name = "url")
+    @Column(name = "imagen_url_sec")
+    @Convert(converter = StringListConverter.class)
     private List<String> imagenUrlSec;
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -68,8 +59,16 @@ public class Producto {
 
     @OneToMany
     @JoinColumn(name = "id_producto")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Inventario> inventario;
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
 
     public String toString() {
         return "Producto{" +
@@ -78,8 +77,6 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", precioVenta=" + precioVenta +
                 ", precioCompra=" + precioCompra +
-                ", color='" + color + '\'' +
-                ", descuento=" + descuento +
                 ", precioRegular=" + precioRegular +
                 ", imagenUrl='" + imagenUrl + '\'' +
                 ", imagenUrlSec=" + imagenUrlSec +

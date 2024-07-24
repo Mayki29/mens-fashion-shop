@@ -1,5 +1,7 @@
 package com.utp.desarrollo.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,9 +24,13 @@ public class Inventario {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "id_producto")
+    @JsonIgnore
     private Producto producto;
     @ManyToOne
     @JoinColumn(name = "id_talla")
     private Talla talla;
+    @ManyToOne
+    @JoinColumn(name = "id_color")
+    private Color color;
     private Integer stock;
 }

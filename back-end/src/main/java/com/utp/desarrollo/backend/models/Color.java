@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,17 +19,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tallas")
-public class Talla {
+@Table(name = "colores")
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(length = 5)
     private String nombre;
 
     @OneToMany
-    @JoinColumn(name = "id_talla")
+    @JoinColumn(name = "id_color")
     @JsonIgnore
     private List<Inventario> inventario;
+
+
 }
