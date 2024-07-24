@@ -1,6 +1,38 @@
-.products-container {
+.container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .row {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .col-3 {
+    max-width: 25%;
+    padding: 15px;
+    background-color: #f8f9fa;
+  }
+  
+  .col-9 {
+    max-width: 75%;
+    padding: 10px;
+  }
+  
+  .products-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 1rem; /* Ajusta el espacio entre los productos */
-}
+    justify-content: space-around;
+    padding: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  

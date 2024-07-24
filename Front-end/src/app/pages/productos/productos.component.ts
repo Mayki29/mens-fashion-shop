@@ -22,8 +22,8 @@ export class ProductosComponent implements OnInit {
   ngOnInit(): void {
     this.getProducts();
     this.getMarcas();
-    this.getCortes();
     this.getColores();
+    this.getCortes();
   }
 
   getProducts(): void {
@@ -49,17 +49,6 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  getCortes(): void {
-    this.apiService.getCortes().subscribe(
-      (data: string[]) => {
-        this.cortes = data;
-      },
-      (error) => {
-        console.error('Error fetching cortes', error);
-      }
-    );
-  }
-
   getColores(): void {
     this.apiService.getColores().subscribe(
       (data: string[]) => {
@@ -71,52 +60,50 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  onMarcaChange(event: any): void {
-    const selectedMarca = event.target.value;
-    if (event.target.checked) {
-      this.selectedMarcas.push(selectedMarca);
-    } else {
-      this.selectedMarcas = this.selectedMarcas.filter(marca => marca !== selectedMarca);
+  getCortes(): void {
+    this.apiService.getCortes().subscribe(
+      (data: string[]) => {
+        this.cortes = data;
+      },
+      (error) => {
+        console.error('Error fetching cortes', error);
+      }
+    );
+  }
+
+  onFilterChange(filterData: { filterType: string, value: string }): void {
+    const { filterType, value } = filterData;
+    if (filterType === 'marca') {
+      this.toggleSelection(this.selectedMarcas, value);
+    } else if (filterType === 'corte') {
+      this.toggleSelection(this.selectedCortes, value);
+    } else if (filterType === 'color') {
+      this.toggleSelection(this.selectedColores, value);
     }
     this.filterProducts();
   }
 
-  onCorteChange(event: any): void {
-    const selectedCorte = event.target.value;
-    if (event.target.checked) {
-      this.selectedCortes.push(selectedCorte);
+  toggleSelection(array: string[], value: string): void {
+    const index = array.indexOf(value);
+    if (index === -1) {
+      array.push(value);
     } else {
-      this.selectedCortes = this.selectedCortes.filter(corte => corte !== selectedCorte);
+      array.splice(index, 1);
     }
-    this.filterProducts();
-  }
-
-  onColorChange(event: any): void {
-    const selectedColor = event.target.value;
-    if (event.target.checked) {
-      this.selectedColores.push(selectedColor);
-    } else {
-      this.selectedColores = this.selectedColores.filter(color => color !== selectedColor);
-    }
-    this.filterProducts();
   }
 
   filterProducts(): void {
-    this.filteredProducts = this.productos.filter(product => {
-      const matchMarca = this.selectedMarcas.length ? this.selectedMarcas.includes(product.marca.nombre) : true;
-      const matchCorte = this.selectedCortes.length ? this.selectedCortes.includes(this.getCorteFromDescription(product.descripcion)) : true;
-      const matchColor = this.selectedColores.length ? this.selectedColores.includes(product.color) : true;
-      return matchMarca && matchCorte && matchColor;
-    });
-  }
+    const marca = this.selectedMarcas.length ? this.selectedMarcas[0] : undefined;
+    const color = this.selectedColores.length ? this.selectedColores[0] : undefined;
+    const entalle = this.selectedCortes.length ? this.selectedCortes[0] : undefined;
 
-  getCorteFromDescription(descripcion: string): string {
-    try {
-      const descObj = JSON.parse(descripcion);
-      return descObj.corte;
-    } catch (e) {
-      console.error('Error parsing description JSON:', e);
-      return '';
-    }
+    this.apiService.filtrarProductos(marca, color, entalle).subscribe(
+      (data: Producto[]) => {
+        this.filteredProducts = data;
+      },
+      (error) => {
+        console.error('Error filtering products', error);
+      }
+    );
   }
 }

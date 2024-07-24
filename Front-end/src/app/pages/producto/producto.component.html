@@ -1,60 +1,89 @@
-<div *ngIf="isLoading" class="text-center">
-  <p>Cargando...</p>
-</div>
-
-<div *ngIf="!isLoading && producto">
-  <div class="container mt-5">
-    <h2>MEN'S FASHION SHOP - INFO POLOS</h2>
-  </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-3">
-            <div *ngFor="let imagen of imagenesSecundarias" (click)="cambiarImagenPrincipal(imagen)">
-              <img [src]="imagen" class="img-fluid mb-2" alt="Imagen secundaria">
-            </div>
-          </div>
-          <div class="col-9">
-            <img [src]="imagenPrincipal" class="img-fluid" alt="Imagen principal">
-          </div>
+<div class="container" *ngIf="producto">
+  <div class="row">
+    <div class="col-6">
+      <div class="image-gallery">
+        <div class="secondary-images">
+          <img *ngFor="let imageUrl of producto?.imagenUrlSec" 
+               [src]="'http://localhost:8080/uploads/' + imageUrl?.trim()" 
+               alt="{{ producto.nombre }}" 
+               (click)="selectImage(imageUrl)" 
+               [class.selected]="imageUrl === selectedImage">
+        </div>
+        <div class="main-image zoom-container">
+          <img [src]="'http://localhost:8080/uploads/' + selectedImage" alt="{{ producto.nombre }}" class="zoom-image">
         </div>
       </div>
-      <div class="col-md-6">
-        <h2>{{ producto.nombre }}</h2>
-        <p>{{ producto.marca?.nombre }}</p>
-        <p>
-          <strong>De:</strong>
-          <span class="text-muted text-decoration-line-through">S/. {{ producto.precioRegular }}</span>
-        </p>
-        <p>
-          <strong>A:</strong> S/. {{ producto.precioVenta }} 
-        </p>
-        <p>
-          <strong>Descuento:</strong> S/. {{ producto.precioRegular - producto.precioVenta }}
-        </p>
-        <p class="btn btn-danger">
-          <strong>20% DSCTO.</strong>
-        </p>
-        <p><strong>Colores Disponibles:</strong></p>
-        <div>
-          <button *ngFor="let color of producto.color?.split(',')" [style.backgroundColor]="color.trim()" class="btn-color"></button>
+      <div class="tabla">
+        <div class="tabs">
+          <button (click)="selectedTab = 'descripcion'" [class.active]="selectedTab === 'descripcion'">DESCRIPCIÓN</button>
+          <button (click)="selectedTab = 'cambios'" [class.active]="selectedTab === 'cambios'">CAMBIOS Y DEVOLUCIONES</button>
         </div>
-        <p><strong>Tallas:</strong></p>
-        <div class="btn-group">
-          <button *ngFor="let talla of producto.tallas" class="btn btn-outline-secondary">{{ talla.nombre }}</button>
+        <div class="tab-content" *ngIf="selectedTab === 'descripcion'">
+          <div class="descripcion">
+            <p *ngFor="let key of keys">
+              <strong>{{ key }}</strong> <span>{{ descripcion[key] }}</span>
+            </p>
+          </div>
         </div>
-        <div class="cantidad-container mt-3">
-          <label for="cantidad" class="cantidad-label">CANTIDAD:</label>
-          <select id="cantidad" name="cantidad" class="cantidad-select">
-            <option *ngFor="let i of [1,2,3,4,5]" [value]="i">{{ i }} unidad</option>
-          </select>
-        </div>
-        <div class="mt-3">
-          <button class="btn btn-warning">Añadir al carrito</button>
+        <div class="tab-content" *ngIf="selectedTab === 'cambios'">
+          <p>
+            Toda solicitud de cambio de productos adquiridos en la tienda virtual, deberá realizarse a través de 
+            servicioalcliente@tiendasel.com dentro de los 30 días después de la recepción del pedido. Los productos como 
+            ropa interior, mercadería en liquidación y zapatillas deportivas (Códigos: 3ZDTXD01, 3ZDTXD02, 3ZDTXD03) no 
+            están sujetos a cambios ni devoluciones.
+          </p>
         </div>
       </div>
+    </div>
+    <div class="col-6">
+      <h1 class="product-name">{{ producto.nombre }}</h1>
+      <h3 class="product-marca">{{ producto.marca.nombre }}</h3>
+      <div class="prices">
+        <div class="price-line-regular">
+          <span class="price-label-regular">De:</span>
+          <span class="regular-price">S/{{ producto.precioRegular }}</span>
+        </div>
+        <div class="price-line-discount">
+          <span class="price-label-discount">A:</span>
+          <span class="discount-price">S/{{ producto.precioVenta }}</span>
+        </div>
+      </div>
+      <div class="decimal-discount">DESCUENTO DE: S/{{ descuento | number: '1.2-2' }}</div>
+      <div class="percent-discount">{{ descuentoPorcentual | number: '1.0-0' }}% DSCTO</div>
+
+      <p class="label-colors">COLORES DISPONIBLES:</p>
+      <div class="color-options">
+        <button class="button-colors" 
+                *ngFor="let color of colores" 
+                (click)="seleccionarColor(color)"
+                [ngClass]="color.toLowerCase()"
+                [class.selected]="color === colorSeleccionado">
+        </button>
+      </div>
+
+      <p class="label-sizes">TALLAS:</p>
+      <div class="talla-options">
+        <button *ngFor="let talla of ['S', 'M', 'L', 'XL']"
+                (click)="seleccionarTalla(talla)"
+                [class.selected]="tallaSeleccionada === talla"
+                [class.unavailable]="!isTallaDisponible(talla)"
+                [class.available]="isTallaDisponible(talla)">
+          {{ talla }}
+        </button>
+      </div>
+      
+      <div class="quantity-container">
+        <p>CANTIDAD:</p>
+        <div class="quantity">
+          <button (click)="ajustarCantidad(-1)">-</button>
+          <input type="number" min="1" [max]="stockDisponible" [(ngModel)]="cantidad">
+          <button (click)="ajustarCantidad(1)">+</button>
+        </div>
+      </div>
+      <div class="mensaje-stock" *ngIf="mensajeStock">{{ mensajeStock }}</div>
+
+
+      <button class="add-to-cart-button" (click)="agregarAlCarrito()">AÑADIR AL CARRITO</button>
     </div>
   </div>
 </div>

@@ -1,28 +1,422 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.2rem;
+}
+
 .container {
-  margin-top: 20px;
+  margin-top: 50px; /* Aumenta el margen superior para crear más espacio */
 }
 
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-
-.btn-color {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ddd;
-  margin-right: 5px;
-}
-
-.cantidad-container {
+.image-gallery {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
-.cantidad-label {
+.secondary-images {
+  display: flex;
+  flex-direction: column;
   margin-right: 10px;
 }
 
-.cantidad-select {
+.secondary-images img {
   width: 100px;
+  height: auto;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
+
+.secondary-images img.selected {
+  border: 2px solid #000;
+}
+
+.main-image {
+  height: calc(121.5px * 4 + 30px); /* Altura de 4 imágenes pequeñas + márgenes */
+}
+
+.main-image img {
+  width: auto;
+  height: 100%;
+}
+
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair; /* Cambia el cursor a una cruz (lupa) */
+
+  .zoom-image {
+    transition: transform 0.1s ease-in-out;
+    transform-origin: center center;
+  }
+
+  &:hover .zoom-image {
+    transform: scale(1.5); /* Ajusta el nivel de zoom */
+  }
+}
+
+.tabla {
+  margin-top: 70px; /* Ajusta el margen superior para mover la tabla hacia abajo */
+  width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
+}
+
+.prices {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.price-line {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.price-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.regular-price {
+  text-decoration: line-through;
+  color: black;
+  font-weight: 505;
+}
+
+.discount-price {
+  color: #db0909;
+  font-weight: bold;
+}
+
+.decimal-discount {
+  color: black;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
+
+}
+
+.percent-discount {
+  margin-top: 0.5rem;
+  color: orange;
+  font-weight: bold;
+  background-color: black;
+  color: white;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.colors, .sizes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a botones */
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.quantity-container p {
+  margin: 0;
+  align-self: center;
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a párrafos en quantity-container */
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.quantity input {
+  width: 50px;
+  height: 40px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  -moz-appearance: textfield;
+}
+
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity button {
+  width: 50px;
+  height: 40px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+quantity button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+button {
+  &.selected {
+    background-color: red;
+    color: white !important;
+  }
+  &[disabled] {
+    background-color: lightgrey;
+    cursor: not-allowed;
+  }
+}
+
+.color-options {
+  margin-top: 5px;
+  
+  .button-colors {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    margin: 5px 5px 0 0;
+    border: 2px solid transparent;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3); /* Transparency effect */
+      z-index: 1;
+    }
+    
+    &.selected {
+      border-color: black;
+    }
+  }
+
+  .negro {
+    background-color: #000;
+  }
+  
+  .blanco {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #ccc; /* Adding an outline to distinguish from the background */
+  }
+  
+  .rojo {
+    background-color: #ff0000;
+  }
+  
+  .verde {
+    background-color: #00ff00;
+  }
+  
+  .azul {
+    background-color: #0000ff;
+  }
+
+  // Añade más clases para otros colores
+}
+
+.talla-options {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+  button {
+    width: 45px;
+    height: 35px;
+    margin: 5px 5px 0 0;
+    border: 1px solid transparent; /* Siempre mostrar el borde */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: bold;
+    color: #555;
+    background-color: white;
+    &.selected {
+      background-color: red;
+      color: white !important;
+    }
+    &.unavailable {
+      background-color: white;
+      color: rgba(0, 0, 0, 0.3);
+      border-color: rgba(0, 0, 0, 0.3);
+      cursor: not-allowed;
+      &::after {
+        content: "X";
+        position: absolute;
+        font-size: 25px;
+        color: rgba(0, 0, 0, 0.3);
+        font-weight: 100;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    &.available {
+      border-color: black;
+      color: #555;
+    }
+  }
+}
+
+.label-colors, .label-sizes {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #7e7d7d;
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a etiquetas de colores y tallas */
+}
+
+.label-sizes {
+  margin-top: 2rem;
+}
+
+.add-to-cart-button {
+  display: block;
+  margin-top: 10px;
+  padding: 13px;
+  padding-right: 100px;
+  padding-left: 100px;
+  background-color: #db0909;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem; /* Aplicando letter-spacing al botón de añadir al carrito */
+}
+
+.quantity-container {
+  color: #7e7d7d;
+  font-size: 15px;
+  font-weight: 550;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.product-name {
+  font-size: 25px;
+  color: #7e7d7d;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing al nombre del producto */
+}
+
+.product-marca {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a la marca del producto */
+}
+
+.tabs {
+  display: flex;
+  margin-top: 20px;
+  width: auto; /* Ajusta el ancho de las cabeceras automáticamente */
+}
+
+.tabs button {
+  flex: none; /* Ajusta el ancho de los botones automáticamente */
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px; /* Reduce el tamaño de fuente de las cabeceras en un 25% */
+  white-space: nowrap; /* Evita que el texto se envuelva */
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a los botones de las pestañas */
+}
+
+.tabs button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tab-content {
+  border: 1px solid #ddd;
+  padding: 25px;
+  width: 160%; /* Mantiene el ancho del contenido */
+  margin-left: 0;
+}
+
+.descripcion {
+  display: table;
+  width: 100%;
+  font-size: 85%; /* Reduce el tamaño de la fuente en un 25% */
+  letter-spacing: 0.1rem; /* Aplicando letter-spacing a la descripción */
+}
+
+.descripcion p {
+  display: table-row;
+  margin-bottom: 15px; /* Añade más espacio entre las filas */
+  line-height: 2; /* Ajusta la altura de la línea para aumentar el espacio */
+}
+
+.descripcion strong {
+  display: table-cell;
+  font-weight: bold;
+  padding-right: 10px; /* Espacio entre la etiqueta y el valor */
+  padding-left: 20px; /* Añadir espacio a la izquierda para alejar del borde */
+  text-align: left;
+}
+
+.descripcion span {
+  display: table-cell;
+  text-align: left;
+}
+.mensaje-stock {
+  color: #db0909; /* Color plateado */
+  font-style: italic; /* Cursiva */
+  font-weight: bold; /* Negrita */
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  
+  &.fade-out {
+    opacity: 0;
+  }
+}
+.mensaje-temporal {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1000;
+
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
