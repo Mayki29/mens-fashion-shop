@@ -1,4 +1,4 @@
-<h1 class="center">Portal del administrador</h1>
+<!--h1 class="center">Portal del administrador</h1>
 <div>
     <div class="container fondo">
         <form>
@@ -16,7 +16,7 @@
                 <label for="floatingPassword"> Ingresar</label></button>
         </div>
     </div>
-    // FIN DE LOGIN administrador
+    // FIN DE LOGIN administrador-->
     <body><br>
         <div>
 
@@ -55,14 +55,7 @@
                 <label for="marca">Marca:</label>
                 <select id="marca" name="marca" [(ngModel)]="producto!.marca" required>
                     <option *ngFor="let m of marcas" [ngValue]="m">{{m.nombre}}</option>
-                </select>
-                <select name="" id="">
-                    <option value="">A</option>
-                    <option value="">B</option>
-                    <option value="">C</option>
-                    <option value="">D</option>
-                    <option value="">E</option>
-                </select>
+                </select>   
 
                 <div class="inventario-container mt-2">
                     <p>Inventario</p>
@@ -102,15 +95,20 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let i of inventario; let ind = index">
-                                <td>
+                                <!--td>
                                     <select class="" [(ngModel)]="inventario[ind].color" [name]="'color'+ind">
                                         <option *ngFor="let c of colores;  trackBy: trackByFn" [ngValue]="c">{{c.nombre}}</option>
                                         
                                     </select>
                                     
-                                </td>
+                                </td-->
+                                <td>{{i.color?.nombre}}</td>
                                 <td>{{i.talla?.nombre}}</td>
                                 <td>{{i.stock}}</td>
+                                <!--td>
+                                    <button (click)="editarItem(ind, i)">editar</button>
+                                    <button (click)="eliminarItem(ind)" >eliminar</button>
+                                </td-->
                             </tr>
                         </tbody>
                     </table>

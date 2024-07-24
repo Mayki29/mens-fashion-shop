@@ -8,7 +8,6 @@ import { Usuario } from 'src/app/models/usuario.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  usuario?: Usuario;
 
   images = ["assets/images/slide-1.jpeg", "assets/images/slide-2.jpeg","assets/images/slide-3.jpeg"];
   customOptions: OwlOptions = {
@@ -38,6 +37,5 @@ export class HomeComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.usuario = JSON.parse(localStorage.getItem("usuario")||'')
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/usuario.model';
 import { ApiService } from 'src/app/services/api.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class LoginComponent implements OnInit {
   usuario:Usuario = new Usuario;
 
-  constructor(private apiService: ApiService) {
+  constructor(private router:Router, private loginService: LoginService) {
    }
 
   ngOnInit(): void {
@@ -23,16 +25,16 @@ export class LoginComponent implements OnInit {
 
   login(usuario: Usuario){
     console.log(usuario)
-    this.apiService.login(usuario).subscribe({
+    this.loginService.login(usuario).subscribe({
       next:(response) =>{
-        if(response.token != null || response.token != ""){
-          localStorage.setItem('token', response.token);
-          localStorage.setItem("usuario", JSON.stringify(response.user));
-          console.log(response);
-          window.location.href = 'home';
-        }else{
-          alert("Vuelva a intentarlo")
-        }
+        console.log(response)
+      },
+      error:(errorData) =>{
+        console.error(errorData);
+      },
+      complete:()=>{
+        console.info("Login Completo");
+        this.router.navigateByUrl('/home');
       }
     })
   }

@@ -23,17 +23,22 @@
         <a class="text-black nav-item" id="dropdownBasic1" ngbDropdownToggle>
           <i class="bi bi-person-fill"></i>
         </a>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <span>Hola </span>
+        <div *ngIf="!userLoginOn" ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <a href="/login" ngbDropdownItem>Iniciar sesion</a>
           <a href="/registro" ngbDropdownItem>Registrarse</a>
+        </div>
+        <div *ngIf="userLoginOn" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <a  ngbDropdownItem>Mi perfil</a>
+          <a (click)="logout()" ngbDropdownItem>Cerrar Sesion</a>
         </div>
       </div>
       <div class="mx-3">
         <a href="/carrito" class="link-body-emphasis text-decoration-none"><i class="bi bi-cart"></i></a>
       </div>
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+      <!--form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
         <input type="search" class="form-control" placeholder="Buscar un producto" aria-label="Search">
-      </form>
+      </form-->
     </div>
   </div>
 </header>

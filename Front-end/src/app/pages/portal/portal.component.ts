@@ -25,9 +25,9 @@ export class PortalComponent implements OnInit {
   marcas: Marca[] = [];
   categorias: Categoria[] = [];
 
-  color: Color = {};
-  talla: Talla = {};
-  stock: number = 0;
+  color?: Color = {};
+  talla?: Talla = {};
+  stock?: number = 0;
   item: Inventario = {};
 
   producto?: Producto;
@@ -67,6 +67,18 @@ export class PortalComponent implements OnInit {
     this.inventario.push({ ...this.item });
     console.log(this.inventario)
   }
+
+  // editarItem(index: number, item:Inventario){
+  //   this.color = item.color;
+  //   this.talla = item.talla;
+  //   this.stock = item.stock;
+
+
+  // }
+
+  // eliminarItem(index: number){
+  //   this.inventario.
+  // }
 
   getFormProductosElements() {
     this.apiService.getFormProductosElements().subscribe({
