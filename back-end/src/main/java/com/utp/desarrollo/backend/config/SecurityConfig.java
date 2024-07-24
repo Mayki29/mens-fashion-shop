@@ -37,7 +37,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authRequest -> //filtro para las rutas privadas y publicas
                 authRequest
                     .requestMatchers("/auth/**").permitAll() //permite todas las request a la ruta que empiece con /auth
-                    .anyRequest().permitAll()//.authenticated() //las otras request deben estar autenticadas
+                    .requestMatchers("/api/producto/**").permitAll()
+                    .anyRequest().permitAll() //las otras request deben estar autenticadas
                     )
             .sessionManagement(sessionManagement->
                 sessionManagement

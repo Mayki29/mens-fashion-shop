@@ -40,7 +40,6 @@ public class Producto {
     private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
-    private String color;
     private Double descuento;
     @Column(name = "precio_regular")
     private Double precioRegular;
@@ -56,7 +55,7 @@ public class Producto {
     @JsonIgnore
     private List<DetalleVenta> detalleVenta;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_producto")
     //@JsonIgnore
     private List<Inventario> inventario;
@@ -68,7 +67,6 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", precioVenta=" + precioVenta +
                 ", precioCompra=" + precioCompra +
-                ", color='" + color + '\'' +
                 ", descuento=" + descuento +
                 ", precioRegular=" + precioRegular +
                 ", imagenUrl='" + imagenUrl + '\'' +

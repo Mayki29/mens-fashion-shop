@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.utp.desarrollo.backend.models.Inventario;
 import com.utp.desarrollo.backend.models.Producto;
 import com.utp.desarrollo.backend.models.dao.IColorDao;
+import com.utp.desarrollo.backend.services.ICategoriaService;
 import com.utp.desarrollo.backend.services.IColorService;
 import com.utp.desarrollo.backend.services.IInventarioService;
 import com.utp.desarrollo.backend.services.IMarcaService;
@@ -56,6 +57,9 @@ public class ProductoController {
 
     @Autowired
     private IMarcaService marcaService;
+
+    @Autowired
+    private ICategoriaService categoriaService;
 
     @GetMapping
     public List<Producto> findAllProductos() {
@@ -141,15 +145,15 @@ public class ProductoController {
         return ResponseEntity.ok(cortes);
     }
 
-    @GetMapping("/colores")
-    public ResponseEntity<List<String>> getColores() {
-        List<String> colores = productoService.findAll()
-                .stream()
-                .map(Producto::getColor)
-                .distinct()
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(colores);
-    }
+    // @GetMapping("/colores")
+    // public ResponseEntity<List<String>> getColores() {
+    //     List<String> colores = productoService.findAll()
+    //             .stream()
+    //             .map(Producto::getColor)
+    //             .distinct()
+    //             .collect(Collectors.toList());
+    //     return ResponseEntity.ok(colores);
+    // }
 
     @GetMapping("/detalle/{id}")
     public ResponseEntity<Producto> getProductoDetalle(@PathVariable Long id) {
@@ -168,6 +172,7 @@ public class ProductoController {
         formElements.put("colores", colorService.findAll());
         formElements.put("tallas", tallaService.findAll());
         formElements.put("marcas", marcaService.findAll());
+        formElements.put("categorias", categoriaService.findAll());
         return formElements;
     }
     
