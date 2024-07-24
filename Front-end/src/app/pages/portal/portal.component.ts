@@ -28,7 +28,7 @@ export class PortalComponent implements OnInit {
   color?: Color = {};
   talla?: Talla = {};
   stock?: number = 0;
-  item: Inventario = {};
+  item: Inventario ;
 
   producto?: Producto;
 
@@ -45,13 +45,19 @@ export class PortalComponent implements OnInit {
         nombre: '',
       },
       categoria: { id: 0, nombre: '' },
-      color: '',
+    
       descuento: 0,
       imagenUrl: '',
       imagenUrlSec: [],
-      tallas: [],
+      
       inventario: [],
     };
+    this.item ={
+      id: 0,
+      talla: {}
+      
+    };
+
   }
 
   ngOnInit(): void {

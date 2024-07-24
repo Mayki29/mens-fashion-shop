@@ -26,6 +26,7 @@ public class Producto {
     @Column(length = 250, columnDefinition = "json")
     private String descripcion;
 
+
     @ManyToOne
     @JoinColumn(name = "id_marca")
     @JsonIgnoreProperties("productos")
@@ -35,19 +36,20 @@ public class Producto {
     @JoinColumn(name = "id_categoria")
     @JsonIgnoreProperties("productos")
     private Categoria categoria;
-
-    @Column(name = "precio_venta")
-    private Double precioVenta;
     @Column(name = "precio_compra")
     private Double precioCompra;
-    private Double descuento;
     @Column(name = "precio_regular")
     private Double precioRegular;
+    @Column(name = "precio_venta")
+    private Double precioVenta;
+
+    @Transient
+    private double descuento;
+
     @Column(name = "imagen_url")
     private String imagenUrl;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "imagen_url_sec", joinColumns = @JoinColumn(name = "producto_id"))
-    @Column(name = "url")
+    @Column(name = "imagen_url_sec")
+    @Convert(converter = StringListConverter.class)
     private List<String> imagenUrlSec;
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -60,6 +62,14 @@ public class Producto {
     //@JsonIgnore
     private List<Inventario> inventario;
 
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
+
     public String toString() {
         return "Producto{" +
                 "id=" + id +
@@ -67,7 +77,6 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", precioVenta=" + precioVenta +
                 ", precioCompra=" + precioCompra +
-                ", descuento=" + descuento +
                 ", precioRegular=" + precioRegular +
                 ", imagenUrl='" + imagenUrl + '\'' +
                 ", imagenUrlSec=" + imagenUrlSec +

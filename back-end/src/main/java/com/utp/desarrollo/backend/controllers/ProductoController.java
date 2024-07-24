@@ -23,18 +23,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
 @RequestMapping("/api/producto")
@@ -48,10 +41,10 @@ public class ProductoController {
 
     @Autowired
     private IInventarioService inventarioService;
-    
+
     @Autowired
     private IColorService colorService;
-    
+
     @Autowired
     private ITallaService tallaService;
 
@@ -63,12 +56,16 @@ public class ProductoController {
 
     @GetMapping
     public List<Producto> findAllProductos() {
-        return productoService.findAll();
+        List<Producto> productos = productoService.findAll();
+        productos.forEach(this::calculateDiscount);
+        return productos;
     }
 
     @GetMapping("/{id}")
     public Producto findProductoById(@PathVariable Long id) {
-        return productoService.findById(id);
+        Producto producto = productoService.findById(id);
+        calculateDiscount(producto);
+        return producto;
     }
 
     @PostMapping
@@ -77,7 +74,7 @@ public class ProductoController {
     }
 
     @GetMapping("/inventario")
-    public List<Inventario> findAllInventario(){
+    public List<Inventario> findAllInventario() {
         return inventarioService.findAll();
     }
 
@@ -116,24 +113,21 @@ public class ProductoController {
     }
 
     @GetMapping("/marcas")
-    public ResponseEntity<List<String>> getMarcas() {
-        List<String> marcas = productoService.findAll()
-                .stream()
-                .map(producto -> producto.getMarca().getNombre())
+    public List<String> getMarcas() {
+        return marcaService.findAll().stream()
+                .map(marca -> marca.getNombre())
                 .distinct()
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(marcas);
     }
 
-    @GetMapping("/cortes")
-    public ResponseEntity<List<String>> getCortes() {
+    @GetMapping("/entalles")
+    public List<String> getEntalles() {
         ObjectMapper mapper = new ObjectMapper();
-        List<String> cortes = productoService.findAll()
-                .stream()
+        return productoService.findAll().stream()
                 .map(producto -> {
                     try {
                         JsonNode descripcionNode = mapper.readTree(producto.getDescripcion());
-                        return descripcionNode.get("corte").asText();
+                        return descripcionNode.get("Entalle").asText();
                     } catch (Exception e) {
                         e.printStackTrace();
                         return null;
@@ -142,22 +136,20 @@ public class ProductoController {
                 .filter(Objects::nonNull)
                 .distinct()
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(cortes);
     }
 
-    // @GetMapping("/colores")
-    // public ResponseEntity<List<String>> getColores() {
-    //     List<String> colores = productoService.findAll()
-    //             .stream()
-    //             .map(Producto::getColor)
-    //             .distinct()
-    //             .collect(Collectors.toList());
-    //     return ResponseEntity.ok(colores);
-    // }
+    @GetMapping("/colores")
+    public List<String> getColores() {
+        return colorService.findAll().stream()
+                .map(color -> color.getNombre())
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/detalle/{id}")
     public ResponseEntity<Producto> getProductoDetalle(@PathVariable Long id) {
         Producto producto = productoService.findById(id);
+        calculateDiscount(producto);
         logger.info("Producto encontrado: {}", producto);
         if (producto != null) {
             return ResponseEntity.ok(producto);
@@ -167,7 +159,7 @@ public class ProductoController {
     }
 
     @GetMapping("/form-producto-elements")
-    public Map<String,Object> getFormProductosElements() {
+    public Map<String, Object> getFormProductosElements() {
         Map<String, Object> formElements = new HashMap<>();
         formElements.put("colores", colorService.findAll());
         formElements.put("tallas", tallaService.findAll());
@@ -175,6 +167,99 @@ public class ProductoController {
         formElements.put("categorias", categoriaService.findAll());
         return formElements;
     }
-    
 
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Producto>> filtrarProductos(
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String entalle) {
+
+        List<Producto> productos = productoService.findAll();
+
+        if (marca != null && !marca.isEmpty()) {
+            logger.info("Filtrando por marca: " + marca);
+            productos = productos.stream()
+                    .peek(producto -> logger.info("Producto Marca: " + producto.getMarca().getNombre()))
+                    .filter(producto -> producto.getMarca().getNombre().equalsIgnoreCase(marca))
+                    .collect(Collectors.toList());
+        }
+
+        if (color != null && !color.isEmpty()) {
+            productos = productos.stream()
+                    .filter(producto -> producto.getInventario().stream()
+                            .anyMatch(inventario -> inventario.getColor().getNombre().equalsIgnoreCase(color)))
+                    .collect(Collectors.toList());
+        }
+
+        if (entalle != null && !entalle.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            productos = productos.stream()
+                    .filter(producto -> {
+                        try {
+                            JsonNode descripcionNode = mapper.readTree(producto.getDescripcion());
+                            return descripcionNode.get("Entalle").asText().equalsIgnoreCase(entalle);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        productos.forEach(this::calculateDiscount);
+
+        logger.info("Productos filtrados: " + productos.size());
+
+        return ResponseEntity.ok(productos);
+    }
+
+    @GetMapping("/detalle-completo/{id}")
+    public ResponseEntity<Map<String, Object>> getProductoDetalleCompleto(@PathVariable Long id) {
+        Producto producto = productoService.findById(id);
+        if (producto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Obtener inventario del producto
+        List<Inventario> inventario = inventarioService.findByProductoId(id);
+
+        // Obtener colores disponibles
+        List<String> colores = inventario.stream()
+                .map(inv -> inv.getColor().getNombre())
+                .distinct()
+                .collect(Collectors.toList());
+
+        // Obtener tallas disponibles por color
+        Map<String, List<String>> tallasPorColor = new HashMap<>();
+        for (Inventario inv : inventario) {
+            String color = inv.getColor().getNombre();
+            String talla = inv.getTalla().getNombre();
+            tallasPorColor.computeIfAbsent(color, k -> new ArrayList<>()).add(talla);
+        }
+
+        // Calcular el descuento
+        double descuento = producto.getPrecioRegular() - producto.getPrecioVenta();
+        double descuentoPorcentual = (descuento / producto.getPrecioRegular()) * 100;
+
+        // Crear respuesta
+        Map<String, Object> response = new HashMap<>();
+        response.put("producto", producto);
+        response.put("inventario", inventario);
+        response.put("colores", colores);
+        response.put("tallasPorColor", tallasPorColor);
+        response.put("descuento", descuento);
+        response.put("descuentoPorcentual", Math.round(descuentoPorcentual));
+        response.put("imagenUrlSec", producto.getImagenUrlSec()); // Asegurarse de agregar las imágenes secundarias
+
+        return ResponseEntity.ok(response);
+    }
+
+    private void calculateDiscount(Producto producto) {
+        if (producto.getPrecioRegular() != null && producto.getPrecioVenta() != null) {
+            double descuento = ((producto.getPrecioRegular() - producto.getPrecioVenta()) / producto.getPrecioRegular()) * 100;
+            producto.setDescuento((int) Math.round(descuento));
+        } else {
+            producto.setDescuento(0);
+        }
+    }
 }

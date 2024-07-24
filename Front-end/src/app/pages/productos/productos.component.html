@@ -1,36 +1,9 @@
 <div class="container">
   <div class="row">
     <div class="col-3">
-      <form action="">
-        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0,ngb-panel-1,ngb-panel-2">
-          <ngb-panel title="Marca" class="prt bg-none">
-            <ng-template ngbPanelContent>
-              <div class="form-check" *ngFor="let marca of marcas">
-                <input class="form-check-input" type="checkbox" [value]="marca" (change)="onMarcaChange($event)">
-                <label class="form-check-label">{{ marca | capitalize }}</label>
-              </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel title="Corte" class="prt bg-none">
-            <ng-template ngbPanelContent>
-              <div class="form-check" *ngFor="let corte of cortes">
-                <input class="form-check-input" type="checkbox" [value]="corte" (change)="onCorteChange($event)">
-                <label class="form-check-label">{{ corte | capitalize }}</label>
-              </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel title="Color" class="prt bg-none">
-            <ng-template ngbPanelContent>
-              <div class="form-check" *ngFor="let color of colores">
-                <input class="form-check-input" type="checkbox" [value]="color" (change)="onColorChange($event)">
-                <label class="form-check-label">{{ color | capitalize }}</label>
-              </div>
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
-      </form>
+      <app-product-filter (filterChange)="onFilterChange($event)"></app-product-filter>
     </div>
-    <div class="col-8 products-container">
+    <div class="col-9 products-container">
       <a [routerLink]="['/producto', product.id]" *ngFor="let product of filteredProducts">
         <app-product-card 
           [nombre]="product.nombre"

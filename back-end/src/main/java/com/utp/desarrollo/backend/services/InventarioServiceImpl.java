@@ -24,4 +24,8 @@ public class InventarioServiceImpl implements IInventarioService {
         return inventarioDao.findById(id).orElse(null);
     }
 
+    public List<Inventario> findByProductoId(Long productoId) {
+        return inventarioDao.findByProductoId(productoId);
+    }
+
 }

@@ -25,6 +25,7 @@ import { ApiService } from './services/api.service';
 import { CapitalizePipe } from './capitalize.pipe';
 import { PortalComponent } from './pages/portal/portal.component';
 import { MiscomprasComponent } from './pages/miscompras/miscompras.component';
+import { ProductFilterComponent } from './product-filter/product-filter.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,9 @@ import { MiscomprasComponent } from './pages/miscompras/miscompras.component';
     CarritoProductComponent,
     ProductCardComponent,
     CapitalizePipe,
+    NosotrosComponent,
+    PortalComponent,
+    ProductFilterComponent,
     NosotrosComponent,
     PortalComponent,
     MiscomprasComponent
