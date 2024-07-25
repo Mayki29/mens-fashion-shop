@@ -19,18 +19,28 @@ interface FormProductosData {
   styleUrls: ['./portal.component.scss'],
 })
 export class PortalComponent implements OnInit {
-  inventario: Inventario[] = [];
+  //tabla y modales
+  listProductos: Producto[] = [];
+  showInventario: Inventario[] = [];
+  showImagenes: string[] = [];
+
+
+  //Selects
   colores: Color[] = [];
   tallas: Talla[] = [];
   marcas: Marca[] = [];
   categorias: Categoria[] = [];
 
+  //Items inventario
   color?: Color = {};
   talla?: Talla = {};
   stock?: number = 0;
-  item: Inventario ;
+  item: Inventario;
 
+  //Modelos formulario
+  inventario: Inventario[] = [];
   producto?: Producto;
+  imagenes?: any;
 
   constructor(private apiService: ApiService) {
     this.producto = {
@@ -45,47 +55,42 @@ export class PortalComponent implements OnInit {
         nombre: '',
       },
       categoria: { id: 0, nombre: '' },
-    
+
       descuento: 0,
       imagenUrl: '',
       imagenUrlSec: [],
-      
+
       inventario: [],
     };
-    this.item ={
+    this.item = {
       id: 0,
-      talla: {}
-      
+      talla: {},
     };
-
+    this.imagenes = {};
   }
 
   ngOnInit(): void {
     this.getFormProductosElements();
-    console.log(this.colores, this.tallas, this.marcas);
+    this.getProductos();
+    
   }
 
   agregarInventario() {
     this.item.color = { ...this.color };
     this.item.talla = { ...this.talla };
     this.item.stock = this.stock;
-
-    this.inventario.push({ ...this.item });
-    console.log(this.inventario)
+    const isIn = this.inventario.some(i => i.color?.id === this.item.color?.id && i.talla.id === this.item.talla.id)
+    if(!isIn){
+      this.inventario.push({ ...this.item });
+    }
   }
 
-  // editarItem(index: number, item:Inventario){
-  //   this.color = item.color;
-  //   this.talla = item.talla;
-  //   this.stock = item.stock;
+  eliminarItem(index: number){
+    this.inventario.splice(index,1);
+  }
 
 
-  // }
-
-  // eliminarItem(index: number){
-  //   this.inventario.
-  // }
-
+  //Mostrar data
   getFormProductosElements() {
     this.apiService.getFormProductosElements().subscribe({
       next: (data: FormProductosData) => {
@@ -104,10 +109,42 @@ export class PortalComponent implements OnInit {
     });
   }
 
+  getProductos(){
+    this.apiService.getProducts().subscribe({
+      next: (data: Producto[]) => {
+        data.forEach(p => p.descripcion = JSON.parse(p.descripcion));
+        this.listProductos = data;
+        console.log(this.listProductos)
+      },
+      error: (e) => {},
+    });
+  }
+
+  loadModalInventario(id: number){
+    const prod = this.listProductos.find(p => p.id == id)
+    this.showInventario = prod?.inventario || [];
+  }
+  loadModalImagenes(id: number){
+    const prod = this.listProductos.find(p => p.id == id)
+    let imgs = prod?.imagenUrlSec.concat(prod?.imagenUrl||'');
+    this.showImagenes = imgs||[];
+  }
+
+
+  //CRUD
   saveProducto(producto: Producto) {
+    producto.descripcion = JSON.stringify(producto.descripcion);
     producto.inventario = [...this.inventario];
 
-    this.apiService.saveProducto(producto).subscribe({
+    const form: FormData = new FormData();
+    form.append('producto', JSON.stringify(producto));
+    form.append('imagenP', this.imagenes.principal);
+    for (let index = 0; index < this.imagenes.secundaria.length; index++) {
+      form.append('imagenS', this.imagenes.secundaria[index]);
+      
+    }
+
+    this.apiService.saveProducto(form).subscribe({
       next: (response) => {
         this.producto = response;
         console.log('Guardar =>', 'Registrado correctamente');
@@ -115,7 +152,28 @@ export class PortalComponent implements OnInit {
       error: (e) => {},
     });
   }
+
+  deleteProducto(id: number){
+    if(!confirm("¿Desea eliminar el producto?")){
+      return
+    }
+    this.apiService.deleteProducto(id).subscribe({
+      next: (response) => {
+        console.log('Eliminar =>', 'Eliminado correctamente');
+        this.getProductos();
+      },
+      error: (e) => {},
+    });
+  }
+
   trackByFn(index: number, item: Inventario) {
     return item.id;
+  }
+
+  capturarImagenPrincipal(event: any): any {
+    this.imagenes.principal = event.target.files[0];
+  }
+  capturarImagenSecundaria(event: any): any {
+    this.imagenes.secundaria = event.target.files;
   }
 }

@@ -1,12 +1,13 @@
 package com.utp.desarrollo.backend.services;
 
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.utp.desarrollo.backend.models.Usuario;
@@ -27,12 +28,20 @@ public class JwtServiceImpl {
     }
 
     private String getToken(Map<String, Object> extraClaims, Usuario user) {
+        Collection<? extends GrantedAuthority> roles = user.getAuthorities();
+        
+        extraClaims.put("authorities", roles);
+        extraClaims.put("rol", user.getRol());
+        extraClaims.put("nombre", user.getNombre());
+        extraClaims.put("apellidos", user.getApellidos());
+        extraClaims.put("usuario", user);
+
         return Jwts
             .builder()
             .setClaims(extraClaims)
             .setSubject(user.getEmail())
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+            .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*5))
             .signWith(getKey(), SignatureAlgorithm.HS256)
             .compact();
     }

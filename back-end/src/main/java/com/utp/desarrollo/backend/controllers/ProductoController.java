@@ -79,19 +79,27 @@ public class ProductoController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Producto> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("producto") String productoJson) {
+    public ResponseEntity<Producto> uploadImage(@RequestParam("imagenP") MultipartFile file, @RequestParam("imagenS") MultipartFile[] fileSeconday, @RequestParam("producto") String productoJson) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             logger.info("Received producto JSON: " + productoJson);
 
             Producto producto = mapper.readValue(productoJson, Producto.class);
 
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            Path path = Paths.get("uploads/" + fileName);
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            // Path path = Paths.get("uploads/" + fileName);
+            // Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            String imageUrl = "http://localhost:8080/uploads/" + fileName;
-            producto.setImagenUrl(imageUrl);
+            //guardar imagen principal
+            producto.setImagenUrl(almacenarImagen(file));
+
+            //guardar imagenes secundarias
+            List<String> imagenesSec = new ArrayList<>();
+            for (MultipartFile fileS : fileSeconday) {
+                imagenesSec.add(almacenarImagen(fileS));
+            }
+            producto.setImagenUrlSec(imagenesSec);
+
 
             Producto savedProducto = productoService.save(producto);
 
@@ -99,6 +107,19 @@ public class ProductoController {
         } catch (Exception e) {
             logger.error("Error uploading image", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    private String almacenarImagen(MultipartFile file){
+        try{
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            Path path = Paths.get("uploads/" + fileName);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return fileName;
+        }catch (Exception e) {
+            logger.error("Error uploading image", e);
+            return "";
         }
     }
 
@@ -129,7 +150,7 @@ public class ProductoController {
                         JsonNode descripcionNode = mapper.readTree(producto.getDescripcion());
                         return descripcionNode.get("Entalle").asText();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         return null;
                     }
                 })

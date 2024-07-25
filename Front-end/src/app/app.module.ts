@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbAccordionModule, NgbAlertModule, NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -26,6 +26,8 @@ import { CapitalizePipe } from './capitalize.pipe';
 import { PortalComponent } from './pages/portal/portal.component';
 import { MiscomprasComponent } from './pages/miscompras/miscompras.component';
 import { ProductFilterComponent } from './product-filter/product-filter.component';
+import { JwtInterceptorService } from './services/jwt-interceptor.service';
+import { ErrorInterceptorService } from './services/error-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,10 @@ import { ProductFilterComponent } from './product-filter/product-filter.componen
     NgbAccordionModule,
     CarouselModule
   ],
-  providers: [ApiService],
+  providers: [ApiService,
+    {provide:HTTP_INTERCEPTORS, useClass:JwtInterceptorService,multi:true},
+    {provide:HTTP_INTERCEPTORS, useClass:ErrorInterceptorService,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
