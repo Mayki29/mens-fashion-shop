@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +35,7 @@ public class Producto {
     @JoinColumn(name = "id_categoria")
     @JsonIgnoreProperties("productos")
     private Categoria categoria;
+
     @Column(name = "precio_compra")
     private Double precioCompra;
     @Column(name = "precio_regular")
@@ -52,10 +52,6 @@ public class Producto {
     @Convert(converter = StringListConverter.class)
     private List<String> imagenUrlSec;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_producto")
-    @JsonIgnore
-    private List<DetalleVenta> detalleVenta;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_producto")

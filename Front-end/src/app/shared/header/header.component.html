@@ -9,12 +9,8 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <!--li><a href="#" class="nav-link px-2 link-secondary">INICIO</a></li-->
         <li><a href="#" class="nav-link px-2 link-body-emphasis">INICIO</a></li>
-        <li><a href="/productosgiyt " class="nav-link px-2 link-body-emphasis">CATEGORIAS</a></li>
-        <li><a href="#" class="nav-link px-2 link-body-emphasis">NOVEDADES</a></li>
-        <li><a href="#" class="nav-link px-2 link-body-emphasis">OFERTAS</a></li>
-        <li><a href="/productos" class="nav-link px-2 link-body-emphasis">MARCAS</a></li>
+        <li><a href="/productos " class="nav-link px-2 link-body-emphasis">CATALOGO</a></li>
         <li><a href="/nosotros" class="nav-link px-2 link-body-emphasis">NOSOTROS</a></li>
-        <li><a href="/miscompras" class="nav-link px-2 link-body-emphasis">MIS COMPRAS</a></li>
       </ul>
 
 
@@ -23,13 +19,12 @@
         <a class="text-black nav-item" id="dropdownBasic1" ngbDropdownToggle>
           <i class="bi bi-person-fill"></i>
         </a>
-        <span>Hola </span>
         <div *ngIf="!userLoginOn" ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <a href="/login" ngbDropdownItem>Iniciar sesion</a>
           <a href="/registro" ngbDropdownItem>Registrarse</a>
         </div>
         <div *ngIf="userLoginOn" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <a  ngbDropdownItem>Mi perfil</a>
+          <a href="/miscompras" ngbDropdownItem>Mis Compras</a>
           <a (click)="logout()" ngbDropdownItem>Cerrar Sesion</a>
         </div>
       </div>
