@@ -7,6 +7,7 @@ export class Usuario {
     email: string;
     telefono: string;
     rol: string;
+
     constructor(){
       this.id = 0;
       this.nombre = '';

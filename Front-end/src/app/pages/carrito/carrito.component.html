@@ -1,76 +1,72 @@
 <div class="container">
-<h1 class="ms-3 my-5"><i class="bi bi-cart3"></i> Carrito de compras</h1>
-<div class="row">
+  <h1 class="ms-3 my-5 titulo-carrito"><i class="bi bi-cart3"></i> Carrito de compras</h1>
+  <div class="row">
     <div class="col-12 col-lg-9">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>PRODUCTO</th>
-                    <th>PRECIO</th>
-                    <th>CANTIDAD</th>
-                    <th>TOTAL</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr app-carrito-product 
-                    [nombre]="'POLO OVERSIZE NEGRO'"
-                    [marca]="'OVERTAKE'"
-                    [imagen]="'assets/images/polo2.jpg'"
-                    [precioAntes]="600.90"
-                    [precio]="49.90"
-                    [total]="49.90">
-                </tr>
-                <tr app-carrito-product 
-                    [nombre]="'POLO OVERSIZE NEGRO'"
-                    [marca]="'OVERTAKE'"
-                    [imagen]="'assets/images/polo2.jpg'"
-                    [precioAntes]="205.90"
-                    [precio]="49.90"
-                    [total]="49.90">
-                </tr>
-                <tr app-carrito-product 
-                    [nombre]="'POLO OVERSIZE NEGRO'"
-                    [marca]="'OVERTAKE'"
-                    [imagen]="'assets/images/polo2.jpg'"
-                    [precioAntes]="60.90"
-                    [precio]="49.90"
-                    [total]="49.90">
-                </tr>
-                <tr app-carrito-product 
-                    [nombre]="'POLO OVERSIZE NEGRO'"
-                    [marca]="'OVERTAKE'"
-                    [imagen]="'assets/images/polo2.jpg'"
-                    [precioAntes]="60.90"
-                    [precio]="49.90"
-                    [total]="49.90">
-                </tr>
-            </tbody>
-        </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">PRODUCTO</th>
+            <th scope="col">PRECIO</th>
+            <th scope="col" class="text-center">CANTIDAD</th>
+            <th scope="col">TOTAL</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cantitems; let i = index">
+            <td class="d-flex align-items-center">
+              <img [src]="'http://localhost:8080/uploads/' + item.imagen" alt="Product Image" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+              <div>
+                <a [routerLink]="['/producto', item.id]" class="product-link">{{ item.nombre }}</a>
+                <br>
+                <span class="marca">{{ item.marca }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="text-red-bold"><s>{{ item.precioRegular | currency }}</s></span>
+              <br>
+              <span>{{ item.precioVenta | currency }}</span>
+            </td>
+            <td class="text-center">
+              <div class="d-flex align-items-center justify-content-center quantity-container">
+                <button class="btn btn-secondary btn-sm me-2" (click)="decrementQuantity(i)">-</button>
+                <span>{{ item.quantity }}</span>
+                <button class="btn btn-secondary btn-sm ms-2" (click)="incrementQuantity(i)">+</button>
+              </div>
+            </td>
+            <td>{{ (item.precioVenta * item.quantity) | currency }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="removeItem(i)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="col-12 col-lg-3">
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th class="text-center" colspan="2">RESUMEN DE SU COMPRA</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>SUBTOTAL:</th>
-                    <td class="text-end">{{subtotal}}</td>
-                </tr>
-                <tr class="text-success">
-                    <th>DESCUENTOS:</th>
-                    <td class="text-end">{{descuentos}}</td>
-                </tr>
-                <tr>
-                    <th>TOTAL:</th>
-                    <td class="text-end">{{total}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <a href="/pago" class="btn btn-warning form-control">FINALIZAR COMPRA</a>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="text-center" colspan="2">RESUMEN DE SU COMPRA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>SUBTOTAL:</th>
+            <td class="text-end">{{ subtotal | currency }}</td>
+          </tr>
+          <tr class="text-green">
+            <th>DESCUENTOS:</th>
+            <td class="text-end">{{ descuento | currency }}</td>
+          </tr>
+          <tr>
+            <th>TOTAL:</th>
+            <td class="text-end text-bold">{{ total | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-warning form-control" (click)="checkout()">Finalizar compra</button>
     </div>
-</div>
+  </div>
 </div>

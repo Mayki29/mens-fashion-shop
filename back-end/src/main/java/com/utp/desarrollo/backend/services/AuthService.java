@@ -1,6 +1,10 @@
 package com.utp.desarrollo.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.utp.desarrollo.backend.auth.AuthResponse;
@@ -22,15 +26,25 @@ public class AuthService {
     @Autowired
     private JwtServiceImpl jwtService;
 
+    private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
+
     public AuthResponse login(LoginRequest request) {
-        return null;
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getContrasena()));
+        Usuario user = usuarioDao.findByEmail(request.getEmail()).orElseThrow();
+        String token = jwtService.getToken(user);
+        return AuthResponse.builder()
+            .token(token)
+            .user(user)
+            .build();
     }
 
     public AuthResponse register(RegisterRequest request) {
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
         usuario.setApellidos(request.getApellidos());
-        usuario.setContrasena(request.getContrasena());
+        usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
         usuario.setEmail(request.getEmail());
         usuario.setDni(request.getDni());
         usuario.setTelefono(request.getTelefono());
@@ -41,6 +55,7 @@ public class AuthService {
 
         return AuthResponse.builder()
             .token(jwtService.getToken(usuario))
+            .user(usuario)
             .build();
 
     }

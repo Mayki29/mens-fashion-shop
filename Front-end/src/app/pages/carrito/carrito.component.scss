@@ -1,3 +1,102 @@
-h1{
-    font-size: 30px;
+.titulo-carrito {
+  font-size: 30px; /* Reduce el tamaño del texto al 80% */
+}
+
+.product-link {
+  text-decoration: none; /* Elimina el subrayado del enlace */
+  color: inherit; /* Mantiene el color del texto original */
+  transition: color 0.3s ease; /* Añade una transición para el color */
+
+  &:hover {
+    color: #000; /* Oscurece más el texto al pasar el cursor */
+  }
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.img-thumbnail {
+  width: 50px;
+  height: 50px;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.btn-secondary {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #ced4da;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-danger i {
+  margin-right: 0;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.text-green {
+  color: green;
+}
+
+.text-red-bold {
+  color: red;
+  font-weight: bold;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.quantity-container {
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center;
+}
+
+td .quantity-container {
+  align-items: center !important;
+}
+
+td .quantity-container span {
+  font-weight: normal;
+}
+
+td span {
+  font-weight: normal;
+}
+
+.table tfoot .text-bold {
+  font-weight: bold !important;
+}
+
+.marca {
+  font-weight: bold !important;
+  font-size: 14px; /* Añade negrita a la marca */
 }

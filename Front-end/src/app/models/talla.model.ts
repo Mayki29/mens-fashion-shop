@@ -1,6 +1,6 @@
 // src/app/models/talla.model.ts
 
-export class Talla {
+export interface Talla {
     id?: number;
     nombre?: string;
   }

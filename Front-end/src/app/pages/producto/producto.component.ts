@@ -20,6 +20,7 @@ export class ProductoComponent implements OnInit {
   stockDisponible: number = 0;
   cantidad: number = 1;
   mensajeStock: string = '';
+  mensajeCarrito: string = '';
   selectedImage: string = '';
   selectedTab: string = 'descripcion';
   descripcion: { [key: string]: string } = {};
@@ -90,7 +91,27 @@ export class ProductoComponent implements OnInit {
   }
 
   agregarAlCarrito(): void {
-    // Lógica para agregar al carrito
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const productIndex = cart.findIndex((item: any) => item.id === this.producto.id && item.color === this.colorSeleccionado && item.talla === this.tallaSeleccionada);
+
+    if (productIndex === -1) {
+      cart.push({
+        id: this.producto.id,
+        nombre: this.producto.nombre,
+        marca: this.producto.marca.nombre,
+        imagen:  this.producto.imagenUrl,
+        precioRegular: this.producto.precioRegular,
+        precioVenta: this.producto.precioVenta,
+        color: this.colorSeleccionado,
+        talla: this.tallaSeleccionada,
+        quantity: this.cantidad
+      });
+    } else {
+      cart[productIndex].quantity += this.cantidad;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.mostrarMensajeCarrito('Producto añadido al carrito correctamente');
   }
 
   seleccionarTalla(talla: string): void {
@@ -128,6 +149,20 @@ export class ProductoComponent implements OnInit {
         mensajeStockElement.classList.add('fade-out');
         setTimeout(() => {
           this.mensajeStock = '';
+        }, 500); // Match this duration with the CSS transition duration
+      }
+    }, 3000);
+  }
+
+  mostrarMensajeCarrito(mensaje: string): void {
+    this.mensajeCarrito = mensaje;
+    clearTimeout(this.fadeOutTimeout);
+    this.fadeOutTimeout = setTimeout(() => {
+      const mensajeCarritoElement = document.querySelector('.mensaje-carrito') as HTMLElement;
+      if (mensajeCarritoElement) {
+        mensajeCarritoElement.classList.add('fade-out');
+        setTimeout(() => {
+          this.mensajeCarrito = '';
         }, 500); // Match this duration with the CSS transition duration
       }
     }, 3000);

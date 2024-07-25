@@ -57,7 +57,7 @@ public class Producto {
     @JsonIgnore
     private List<DetalleVenta> detalleVenta;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_producto")
     //@JsonIgnore
     private List<Inventario> inventario;
